@@ -1,0 +1,11 @@
+/mlruns/
+*/data_agregg.csv
+*/data_agregg_selec.csv
+/__pycache__
+*.DS_Store
+*/__init__.py
+*__init__.*
+*.cpython-*
+*.pkl
+*/Data/cleaned/*
+*/Data/raw/*
