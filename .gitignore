@@ -1,10 +1,9 @@
 /mlruns/
-/__pycache__
+__pycache__/
 *.DS_Store
 */__init__.py
 *__init__.*
 *.cpython-*
-*.pkl
 /Data/cleaned/
 /Data/raw/
 venv/
