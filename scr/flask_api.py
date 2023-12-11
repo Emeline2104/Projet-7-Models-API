@@ -19,7 +19,7 @@ Variables globales :
 - model : Modèle entraîné utilisé pour les prédictions.
 - preprocessor : Fonction de prétraitement des données utilisée pour les prédictions.
 """
-from preprocessing import pre_processing
+from scr.preprocessing import pre_processing
 # from scr.preprocessing.aggregation import aggreger
 # from scr.models.feature_importance import explainer_lime
 from flask import Flask, jsonify
