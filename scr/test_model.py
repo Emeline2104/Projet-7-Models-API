@@ -29,7 +29,6 @@ import pytest
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from lightgbm import LGBMClassifier
-from models.feature_importance import explainer_lime
 import numpy as np
 
 # Test de la fonction select_features
