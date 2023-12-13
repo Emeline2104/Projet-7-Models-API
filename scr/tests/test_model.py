@@ -3,8 +3,8 @@ sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Model
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 
 
-from preprocessing.pre_processing import select_features, split_data, handle_missing_values, clean_feature_names, preprocessor, preprocessor_api
-from preprocessing.aggregation import (
+from scr.preprocessing.pre_processing import select_features, split_data, handle_missing_values, clean_feature_names, preprocessor, preprocessor_api
+from scr.preprocessing.aggregation import (
     one_hot_encoder,
     application_train_test,
     bureau_and_balance,
