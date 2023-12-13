@@ -27,7 +27,7 @@ Dépendances:
     - imblearn
     - mlflow
 """
-from models.feature_importance import explainer_lime
+from scr.models.feature_importance import explainer_lime
 import numpy as np
 import time
 from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_split
