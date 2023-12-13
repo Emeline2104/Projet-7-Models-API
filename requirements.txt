@@ -24,7 +24,7 @@ markdown-it-py==3.0.0
 matplotlib==3.8.0
 matplotlib-inline==0.1.6
 ml-dtypes==0.2.0
-mlflow==2.7.1
+mlflow==2.9.1
 numpy==1.26.2
 pandas==2.1.4
 plotly==5.17.0
