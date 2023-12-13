@@ -2,8 +2,9 @@ name: Run Tests and Deploy
 
 on:
   push:
-    branches:
-      - "*"
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   test:
@@ -23,30 +24,3 @@ jobs:
 
       - name: Run Unit Tests
         run: ./run_tests.sh
-
-  deploy:
-    runs-on: macos-latest
-
-    needs: test # Indique que ce job dépend du job "test"
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.11.6"
-
-      - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-          heroku --version
-
-      - name: Login to Heroku
-        run: heroku container:emeline.tapin@gmail.com # changer
-
-      - name: Build and Deploy
-        run: |
-          heroku container:push web -a projet-7
-          heroku container:release web -a projet-7
