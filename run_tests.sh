@@ -3,8 +3,14 @@
 # Installer les dépendances ou les outils nécessaires
 pip install -r requirements.txt
 
+# Se déplace dans le répertoire racine du projet
+cd $GITHUB_WORKSPACE
+
+# Ajoute le répertoire actuel au PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:$(pwd)
+
 # Lance les tests unitaires
-pytest scr/tests/test_model.py
+pytest scr/test_model.py
 
 # Capture le code de sortie des tests
 TEST_EXIT_CODE=$?
