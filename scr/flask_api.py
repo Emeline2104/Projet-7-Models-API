@@ -19,9 +19,7 @@ Variables globales :
 - model : Modèle entraîné utilisé pour les prédictions.
 - preprocessor : Fonction de prétraitement des données utilisée pour les prédictions.
 """
-from scr.preprocessing import pre_processing
-# from scr.preprocessing.aggregation import aggreger
-# from scr.models.feature_importance import explainer_lime
+from preprocessing import pre_processing
 from flask import Flask, jsonify
 import pandas as pd
 import joblib
@@ -30,21 +28,24 @@ import lime.lime_tabular
 import numpy as np
 import random
 import logging
+from flask import request
+import dill
+import os 
 
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Déplacer ces informations vers un fichier de configuration + mettre en majuscule 
 # Chemins de fichiers
-# data_path = 'Data/cleaned/data_agregg2.parquet'
 model_filename = "models/best_model.pkl"
-# preprocessing1_function_filename = "models/preprocessing_function.pkl"
+explainer_filename = "models/explainer_info.dill"
+seuil_filename = "models/meilleur_seuil.txt"
+data_path = "https://projet-7-aws.s3.eu-north-1.amazonaws.com/data_agregg_selec.csv"
+
 
 # Chargement des données
-#data = pd.read_parquet('Data/cleaned/data_agregg.parquet', engine='fastparquet') # Mettre le chemin d'accès en variable global 
-# data = pd.read_parquet('Data/cleaned/data_agregg2.parquet')
+data = pd.read_csv(data_path)
 
 # Fonctions de chargement
 def load_model(filename):
@@ -82,6 +83,29 @@ def load_function(filename):
         return joblib.load(filename)
     except Exception as e:
         raise RuntimeError(f"Error loading function from {filename}: {str(e)}")
+    
+def load_explainer(filename):
+    """
+    Charge un explainer à partir d'un fichier utilisant la bibliothèque Dill.
+
+    Args:
+        filename (str): Le chemin vers le fichier de l'explainer.
+
+    Returns:
+        object: L'explainer chargé depuis le fichier.
+
+    Raises:
+        RuntimeError: Si une erreur se produit lors du chargement de l'explainer.
+    """
+    try:
+        with open(filename, 'rb') as f:
+            return dill.load(f)
+    except Exception as e:
+        raise RuntimeError(f"Error loading explainer from {filename}: {str(e)}")
+    
+# Chargement du modèle entraîné et des fonctions
+model = load_model(model_filename)
+explainer = load_explainer(explainer_filename)
 
 def data_reader(file_path, chunk_size=2000000):
     # Ouvre le fichier en utilisant l'itérateur de pandas
@@ -208,12 +232,10 @@ def format_client_data(client_data, donnees_test_path="Data/sampled/test_x_selec
     client_data_formatted = client_data_processed.reindex(columns=donnees_test.columns, fill_value=0)
     logging.info(pd.DataFrame(client_data_formatted).head())
     logging.info(pd.DataFrame(client_data_formatted).shape)
-    print(pd.DataFrame(client_data_formatted).head())
-    print(pd.DataFrame(client_data_formatted).shape)
     del donnees_test
     return pd.DataFrame(client_data_formatted)
 
-def predict_new_client(client_id):
+def predict_new_client(model, new_client_data, threshold):
     """
     Effectue des prédictions sur les nouvelles données d'un client.
 
@@ -223,22 +245,21 @@ def predict_new_client(client_id):
     Returns:
     - str: La prédiction du modèle.
     """
-    data = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/data_agregg_selec.csv")
-
-    # Filtre sur les données du client à partir de l'ID client
-    new_client_data = data.loc[data['SK_ID_CURR'] == client_id]
-    del data
-
-    new_client_data = format_client_data(new_client_data)
-    print(f"Trying to predict for client ID: {client_id}")
     if pd.DataFrame(new_client_data).empty:
         return {'error': 'Client non trouvé'}
-    print(new_client_data.head())
     # Prédictions avec le modèle
-    predictions = model.predict(new_client_data)
-    return {'predictions': predictions.tolist()}
+    # predictions = model.predict(new_client_data)
+    
+    # Prédictions de probabilité avec le modèle
+    proba_predictions = model.predict_proba(new_client_data)[:, 1]  # Assuming binary classification
+    print(proba_predictions)
+    # Filtrer les prédictions en fonction du seuil
+    predicted_class = '1' if proba_predictions > threshold else '0'
+    print(predicted_class)
+    # Modifier la structure du dictionnaire de sortie
+    return int(predicted_class), float(proba_predictions[0])
 
-#def calculer_importance_caracteristiques(client_id, modele, donnees):
+def calculer_importance_caracteristiques(explainer, new_client_data):
     """
     Calcule l'importance des caractéristiques individuelles pour un client donné en utilisant LIME.
 
@@ -249,40 +270,42 @@ def predict_new_client(client_id):
     Returns:
         dict: Dictionnaire contenant les caractéristiques et leur importance.
     """
-    # Filtre sur les données du client à partir de l'ID client
-    #new_client_data = data.loc[data['SK_ID_CURR'] == client_id]
-
-    #new_client_data = format_client_data(new_client_data)
-
-    # Utilisation de LimeTabularExplainer
-    #explainer = lime.lime_tabular.LimeTabularExplainer(training_data=np.array(donnees), # pas les bonnes données d'entrainement
-                                                      #mode='classification',
-                                                      #feature_names=list(donnees.columns),
-                                                      #class_names=['TARGET'])
-
     # Explication LIME pour le client spécifié
-    #explication = explainer.explain_instance(data_row=np.array(new_client_data),
-                                             #predict_fn=modele.predict_proba,
-                                             #num_features=len(list(donnees.columns)))
+    data_client = new_client_data.to_numpy().astype(int)
+    explication = explainer.explain_instance(data_row=data_client[0],
+                                             predict_fn=model.predict_proba,
+                                             num_features=len(list(new_client_data.columns)))
+    #importance_caracteristiques = {}
+    #for feature, importance in explication.as_list():
+    #    importance_caracteristiques[feature] = importance
+    # Création d'un DataFrame pour stocker les importances des caractéristiques
+    importance_df = pd.DataFrame(explication.as_list(), columns=['Caracteristique', 'Importance'])
+    
+    # Ajout d'une colonne pour la valeur absolue de l'importance
+    importance_df['Importance_Absolue'] = importance_df['Importance'].abs()
+    
+    # Tri du DataFrame par l'importance absolue par ordre décroissant
+    importance_df = importance_df.sort_values(by='Importance_Absolue', ascending=False)
+    print(importance_df)
+    # Création d'un dictionnaire à partir du DataFrame pour la valeur de retour
+    importance_caracteristiques = dict(zip(importance_df['Caracteristique'], importance_df['Importance']))
 
-    # Récupération de l'importance des caractéristiques
-   #importance_caracteristiques = {}
-    #for feature, importance in explication.as_map()[1]:
-    #   importance_caracteristiques[feature] = importance
+    return importance_caracteristiques
 
-    #return importance_caracteristiques
-
-# Chargement du modèle entraîné et des fonctions
-model = load_model(model_filename)
+def get_client_data(client_id):
+    return data.loc[data['SK_ID_CURR'] == client_id]
 
 # Routes Flask
-#@app.route('/api/importance-caracteristiques/<int:client_id>', methods=['GET'])
-#def get_importance_caracteristiques(client_id):
-    #try:
-        #importance_caracteristiques = calculer_importance_caracteristiques(client_id, model, data)
-        #return jsonify(importance_caracteristiques)
-    #except Exception as e:
-        #return jsonify({'error': str(e)})
+@app.route('/get_importance-caracteristiques/<int:client_id>', methods=['GET'])
+def get_importance_caracteristiques(client_id):
+    client_id = int(client_id)  # Convertir client_id en entier
+    try:
+        client_data = get_client_data(client_id)
+        formatted_data = format_client_data(client_data)
+        importance_caracteristiques = calculer_importance_caracteristiques(explainer, formatted_data)
+        return jsonify(importance_caracteristiques)
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @app.route('/get_target/<client_id>', methods=['GET'])
@@ -327,7 +350,6 @@ def get_client_info(client_id):
         return jsonify({'error': 'Client non trouvé'}), 404
 
 @app.route('/predict/<int:client_id>', methods=['GET'])
-
 def predict(client_id):
     """
     Endpoint pour effectuer des prédictions sur les nouvelles données client.
@@ -336,18 +358,23 @@ def predict(client_id):
     - client_id (int): L'ID du client.
 
     Returns:
-    - JSON: Les prédictions du modèle.
+    - JSON: Les prédictions du modèle et les probabilités de prédiction.
     """
     client_id = int(client_id)  # Convertir client_id en entier
-
     try:
-        # Appelez la fonction de prédiction
-        predictions = predict_new_client(client_id)
+        client_data = get_client_data(client_id)
+        formatted_data = format_client_data(client_data)
+        with open('models/meilleur_seuil.txt', 'r') as file:
+            file_content = file.read()
+            threshold = float(file_content)
+        # Appele la fonction de prédiction
+        prediction, probability = predict_new_client(model, formatted_data, threshold)
 
-        # Retournez les prédictions au format JSON
-        return jsonify(predictions)
+        return jsonify({'prediction': prediction, 'probability': probability})
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
     
 @app.route('/informations_client_brut/<int:client_id>', methods=['GET'])
 def obtenir_informations_client(client_id):
@@ -356,6 +383,71 @@ def obtenir_informations_client(client_id):
     client_id = int(client_id)  # Convertir client_id en entier
     informations_client = obtenir_informations_brutes_client(client_id, lecteur_donnees)
     return jsonify(informations_client)
+
+def determine_age_group(age):
+    if -(age/365) < 30:
+        return 'Moins de 30 ans'
+    elif -(age/365) <= age < 40:
+        return '30-40 ans'
+    elif -(age/365) <= age < 50:
+        return '40-50 ans'
+    else:
+        return 'Plus de 50 ans'
+    
+@app.route('/get_group_info', methods=['GET'])
+def get_group_info_raw():
+    """
+    Endpoint pour obtenir des informations brutes sur un groupe de clients en fonction de certaines colonnes.
+
+    Returns:
+    - JSON: Les informations brutes sur le groupe de clients.
+    """
+    #data = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/data_agregg_selec.csv")
+    data = pd.read_csv("Data/sampled/application_train_selected.csv")
+    # Ajoutez ici la logique pour filtrer les données en fonction des colonnes souhaitées (âge, sexe, emploi, etc.)
+    # Par exemple, vous pouvez utiliser les arguments de la requête pour spécifier les filtres
+    #age_filter = request.args.get('age')
+    age_group = request.args.get('age')
+    sex_filter = request.args.get('sex')
+    job_filter = request.args.get('job')
+    # Filtrez les données uniquement sur les colonnes "NAME_CONTRACT_TYPE" et "TARGET"
+    filtered_data = data[['SK_ID_CURR', 'NAME_CONTRACT_TYPE', 'TARGET', 'DAYS_BIRTH', 'CODE_GENDER', 'OCCUPATION_TYPE', 'AMT_CREDIT', 'AMT_ANNUITY', 'AMT_INCOME_TOTAL', ]]
+
+    # Filtrez les données en fonction des filtres spécifiés
+    if age_group:
+        # Filtrer les données par tranche d'âge
+        filtered_data['AGE_GROUP'] = filtered_data['DAYS_BIRTH'].apply(determine_age_group)
+        filtered_data = filtered_data[filtered_data['AGE_GROUP'] == age_group]
+
+    if sex_filter:
+        filtered_data = filtered_data[filtered_data['CODE_GENDER'] == sex_filter]
+    if job_filter:
+        filtered_data = filtered_data[filtered_data['OCCUPATION_TYPE'] == job_filter]
+
+    # Convertissez le DataFrame en JSON
+    filtered_data_json = filtered_data.to_json(orient='records')
+
+    return jsonify(filtered_data_json)
+
+# Route pour obtenir les informations à partir du fichier texte
+@app.route('/get_info_seuil')
+def get_info_from_file():
+    # Chemin pour obtenir les infos sur le seuil de classification optimal 
+    file_path = 'models/meilleur_seuil.txt'
+
+    # Ouverture du fichier
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+
+    # Renvoye le contenu en tant que réponse
+    return file_content
+
+@app.route('/get_global_feature_importance', methods=['GET'])
+def get_global_feature_importance():
+    # Chemin pour obtenir les infos de feature importance globale
+    importance_df = pd.read_csv('feature_imortance_global.csv')
+    return jsonify(importance_df.to_dict(orient='records'))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

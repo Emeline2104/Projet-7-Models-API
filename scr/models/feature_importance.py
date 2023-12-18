@@ -3,6 +3,10 @@
 import lime
 from lime import lime_tabular
 import numpy as np
+import pandas as pd
+from lightgbm import LGBMClassifier
+import joblib
+
 
 def explainer_lime(train_x, train_y, predict_fn):
     """
@@ -50,36 +54,32 @@ def show_feature_importance(best_model, feats):
     :param best_model: Le modèle pour lequel vous souhaitez afficher l'importance des caractéristiques.
     :param feats: La liste des noms de caractéristiques correspondant au modèle.
     """
+    #print(model.named_steps.keys())
+    #model = best_model.named_steps['classifier']
+    model = best_model
     # Obtention les coefficients du modèle
-    print(best_model.named_steps.keys())
-
-    model1 = best_model.named_steps['classifier']
-
-    # Accéder aux coefficients
-    coefficients = model1.coef_[0]
+    if isinstance(model, LGBMClassifier):
+        coefficients =  model.feature_importances_
+    else: 
+        coefficients = model.coef_[0]
 
     # Création d'un DataFrame pour visualiser les coefficients et les caractéristiques correspondantes
     importance_df = pd.DataFrame({'Feature': feats, 'Coefficient': coefficients})
     importance_df['Absolute_Coefficient'] = np.abs(importance_df['Coefficient'])
 
     # Trie le DataFrame par ordre décroissant d'importance absolue
-    importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False).head(20)
+    importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False)
 
     # Affichage les caractéristiques les plus importantes
     print(importance_df)
 
-    # Création du graphique à barres
-    plt.figure(figsize=(10, 6))
-    plt.barh(importance_df['Feature'], importance_df['Absolute_Coefficient'])
-    plt.xlabel('Importance absolue')
-    plt.ylabel('Caractéristiques')
-    plt.title('Importance des caractéristiques')
-    plt.show()
+    # Enregistre le DataFrame au format CSV
+    importance_df.to_csv("feature_imortance_global.csv", index=False)
 
     return importance_df
 
 
-def show_feature_importance_lgbm(best_model, feats):
+def show_feature_importance_lgbm(best_model, feats): # a sup
     """
     Affiche l'importance des caractéristiques d'un modèle.
 
@@ -98,17 +98,7 @@ def show_feature_importance_lgbm(best_model, feats):
     importance_df['Absolute_Coefficient'] = np.abs(importance_df['Coefficient'])
 
     # Trie le DataFrame par ordre décroissant d'importance absolue
-    importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False).head(20)
+    importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False)
 
-    # Affichage les caractéristiques les plus importantes
-    print(importance_df)
-
-    # Création du graphique à barres
-    plt.figure(figsize=(10, 6))
-    plt.barh(importance_df['Feature'], importance_df['Absolute_Coefficient'])
-    plt.xlabel('Importance absolue')
-    plt.ylabel('Caractéristiques')
-    plt.title('Importance des caractéristiques')
-    plt.show()
-
-
+    # Enregistre le DataFrame au format CSV
+    importance_df.to_csv("feature_imortance_global.csv", index=False)

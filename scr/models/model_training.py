@@ -27,13 +27,17 @@ Dépendances:
     - imblearn
     - mlflow
 """
-from scr.models.feature_importance import explainer_lime
+import sys
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
+from scr.models.feature_importance import explainer_lime, show_feature_importance, show_feature_importance_lgbm
 import numpy as np
 import time
 from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils import class_weight
 from sklearn.linear_model import LogisticRegression
+from lightgbm import LGBMClassifier
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
 from sklearn.pipeline import Pipeline
@@ -293,12 +297,19 @@ def evaluate_model(trained_model, test_x, test_y):
     """
     # Prédictions sur l'ensemble de test
     debut_temps_inference = time.time()
+    probas = trained_model.predict_proba(test_x)
+    # Enregistrement des probabilités dans un fichier
+    joblib.dump(probas, "models/probabilities_file.joblib")
     probas = trained_model.predict_proba(test_x)[:, 1]
     fin_temps_inference = time.time()
     temps_inference = fin_temps_inference - debut_temps_inference
 
     # Calcul du seuil optimal
     meilleur_seuil = find_optimal_threshold(test_y, probas)
+
+    # Enregistrement dans un fichier texte
+    with open("models/meilleur_seuil.txt", "w") as fichier:
+        fichier.write(str(meilleur_seuil))
 
     # Utilisation du seuil optimal pour prédire les classes
     predictions_avec_seuil = (probas >= meilleur_seuil).astype(int)
@@ -387,29 +398,13 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
         return trained_model.predict(x, num_iteration=trained_model.best_iteration_)
 
     # Expliquer les caractéristiques importantes avec LIME
-    #explainer_features_importance = explainer_lime(train_x_selected, train_y_all, predict_fn=predict_fn)
-
-    # Calcul des caractéristiques importantes pour une instance spécifique
-    #instance_idx = 0
-    #explanation = explainer_features_importance.explain_instance(
-    #    train_x_selected.iloc[instance_idx],
-    #    predict_fn,
-    #    num_features=len(train_x_selected.columns),
-    #)
-
-    # Obtention des caractéristiques importantes sous forme de liste
-    #feature_importance_list = explanation.as_list()
-    #print("Feature Importance List:", feature_importance_list)
-
-    # Sauvegarde manuelle des caractéristiques importantes
-    #explainer_features_importance_info = {
-    #    'feature_importance': feature_importance_list,
-    #    'other_info': 'other_info_value'  # Ajoutez d'autres informations nécessaires
-    #}
+    explainer_features_importance = explainer_lime(train_x_selected, train_y_all, predict_fn=predict_fn)
 
     # Enregistrez l'explainer
-    #with open("explainer_info.dill", "wb") as file:
-    #    dill.dump(explainer_features_importance, file)
+    with open("models/explainer_info.dill", "wb") as file:
+        dill.dump(explainer_features_importance, file)
 
-
-    return trained_model, _
+    # Enregistre la feature importance globale 
+    show_feature_importance(trained_model, train_x_selected.columns)
+    
+    return trained_model

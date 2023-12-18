@@ -59,9 +59,9 @@ def dummy_classifier(df, balance=None):
     }
     
     # Evaluation du modèle
-    best_model, _ = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
+    best_model= train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
 
-    return best_model, _
+    return best_model
 
 
 def reg_log(df, balance=None):
@@ -90,9 +90,9 @@ def reg_log(df, balance=None):
     print("Début de la Régression Logistique. Forme de l'ensemble d'entraînement : {}, forme de l'ensemble de validation : {}".format(train_x.shape, test_x.shape))
 
     # Evaluation du modèle
-    best_model, explainer_features_importance = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
+    best_model = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
 
-    return best_model, explainer_features_importance
+    return best_model
 
 
 
@@ -132,9 +132,9 @@ def kfold_lightgbm(df, balance=None):
     print("test_x shape",test_x.shape)
     print("test_y shape",test_y.shape)
     # Evaluation du modèle
-    best_model, explainer_features_importance = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
+    best_model = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
 
-    return best_model, explainer_features_importance
+    return best_model
 
 
 
@@ -175,6 +175,6 @@ def random_forest(df, balance=None):
 
 
     # Evaluation du modèle
-    best_model, explainer_features_importance = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
+    best_model = train_and_evaluate_model(train_x, train_y, test_x, test_y, model_selec, param_grid, balance, sample=2000)
 
-    return best_model, explainer_features_importance
+    return best_model
