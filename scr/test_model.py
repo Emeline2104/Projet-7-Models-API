@@ -72,7 +72,7 @@ from scr.preprocessing.pre_processing import (
 
 from scr.preprocessing.aggregation import one_hot_encoder
 
-from models.model_training import (
+from scr.models.model_training import (
     custom_scorer,
     find_optimal_threshold,
     create_pipeline,
@@ -307,7 +307,7 @@ def test_load_model():
 
     Vérifie que la fonction charge un modèle avec succès à partir d'un fichier spécifié.
     """
-    model_filename = "models/best_model.pkl"
+    model_filename = "scr/models_saved/best_model.pkl"
     model = load_model(model_filename)
     assert model is not None  # Vérifie si le modèle est chargé avec succès
 
@@ -318,7 +318,7 @@ def test_load_explainer():
     Vérifie que la fonction charge un explainer avec succès à partir d'un fichier spécifié.
     """
     # Teste le chargement de l'explainer
-    explainer_filename = "models/explainer_info.dill"
+    explainer_filename = "scr/models_saved/explainer_info.dill"
     explainer = load_explainer(explainer_filename)
     assert explainer is not None  # Vérifie si l'explainer est chargé avec succès
 

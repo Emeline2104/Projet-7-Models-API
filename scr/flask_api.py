@@ -50,9 +50,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Chemins de fichiers
-model_filename = "models/best_model.pkl"
-explainer_filename = "models/explainer_info.dill"
-seuil_filename = "models/meilleur_seuil.txt"
+model_filename = "scr/models_saved/best_model.pkl"
+explainer_filename = "scr/models_saved/explainer_info.dill"
+seuil_filename = "scr/models_saved/meilleur_seuil.txt"
 
 # Fonctions de chargement
 def load_model(filename):
@@ -236,7 +236,7 @@ def predict():
         # Récupére les données JSON de la requête
         client_data = request.get_json()
         formatted_data = format_client_data(client_data)
-        with open('models/meilleur_seuil.txt', 'r') as file:
+        with open('scr/models_saved/meilleur_seuil.txt', 'r') as file:
             file_content = file.read()
             threshold = float(file_content)
         # Appele la fonction de prédiction
@@ -257,7 +257,7 @@ def get_info_from_file():
     - str: Contenu du fichier texte contenant le seuil de classification optimal.
     """
     # Chemin pour obtenir les infos sur le seuil de classification optimal
-    file_path = 'models/meilleur_seuil.txt'
+    file_path = 'scr/models_saved/meilleur_seuil.txt'
 
     # Ouverture du fichier
     with open(file_path, 'r') as file:
