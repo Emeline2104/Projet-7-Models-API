@@ -123,7 +123,7 @@ def format_client_data(client_data, donnees_test_path="Data/sampled/test_x_selec
     - donnees_test_path (str): Le chemin d'accès vers le fichier de données de test.
 
     Returns:
-    - pd.DataFrame: Les données formatées pour la prédiction.
+    - pd.DataFrame: Les données for et matées pour la prédiction.
     """
     # Conversion du dictionnaire en DataFrame
     client_data = pd.DataFrame.from_dict([client_data])
