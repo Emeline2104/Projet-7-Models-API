@@ -83,7 +83,53 @@ Le projet est organisé de la manière suivante :
     - **aggregation.py**: Script pour l'agrégation des données.
     - **pre_processing.py**: Script pour le nettoyage et l'ingénierie des fonctionnalités.
   - **test_model.py**: Script pour les tests unitaires du modèle.
-  - 
+
+Projet-7-Models-API
+├── .github/workflows
+│ └── Update tests.yml
+├── Data
+│ └── sampled
+│ ├── POS_CASH_balance_selected.csv
+│ ├── application_train_selected.csv
+│ ├── bureau_balance_selected.csv
+│ ├── bureau_selected.csv
+│ ├── credit_card_balance_selected.csv
+│ ├── installments_payments_selected.csv
+│ ├── previous_application_selected.csv
+│ └── test_x_selected_head.csv
+├── github/workflows
+│ └── maj localisation tests
+├── models
+│ └── Models
+├── notebook
+│ └── EDA
+├── scr
+│ ├── data_drift_analysis
+│ │ ├── data_drift.py
+│ │ └── data_drift_report.html
+│ ├── flask_api.py
+│ ├── models
+│ │ ├── feature_importance.py
+│ │ ├── main.py
+│ │ ├── model_training.py
+│ │ └── models_selec.py
+│ ├── models_saved
+│ │ ├── best_model.pkl
+│ │ ├── explainer_info.dill
+│ │ └── meilleur_seuil.txt
+│ ├── preprocessing
+│ │ ├── aggregation.py
+│ │ └── pre_processing.py
+│ └── test_model.py
+├── .gitignore
+├── Procfile
+├── README.md
+├── feature_imortance_global.csv
+├── makefile
+├── requirements.txt
+├── run_tests.sh
+├── runtime.txt
+├── TAPIN_Emeline_3_note_méthodologique_122023.pages
 ## Installation et exécution 
 
 ### Installation
