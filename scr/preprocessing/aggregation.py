@@ -1,19 +1,24 @@
 """
 Script de prétraitement des données pour une tâche de classification de crédit.
-Le script effectue le chargement des données, l'encodage one-hot, l'agrégation, et la création de nouvelles fonctionnalités.
+Le script effectue le chargement des données, l'encodage one-hot, l'agrégation, et 
+la création de nouvelles fonctionnalités.
 
 Auteur: Emeline TAPIN
 Date de création: 16/11/2023
 
 Fonctions disponibles:
 - one_hot_encoder: Effectue le codage one-hot des colonnes catégorielles d'un DataFrame.
-- select_features: Sélectionne les caractéristiques avec un taux de remplissage d'au moins `threshold` et selon une liste de features pré-défini.
-- application_train_test: Charge les données d'entraînement et de test, effectue le prétraitement, et crée de nouvelles fonctionnalités.
-- bureau_and_balance: Agrège les données des tableaux bureau et bureau_balance et réalise des transformations.
+- select_features: Sélectionne les caractéristiques avec un taux de remplissage d'au moins `threshold`
+et selon une liste de features pré-défini.
+- application_train_test: Charge les données d'entraînement et de test, effectue le prétraitement,
+et crée de nouvelles fonctionnalités.
+- bureau_and_balance: Agrège les données des tableaux bureau et bureau_balance et réalise 
+des transformations.
 - previous_applications: Traite et prépare les données du tableau previous_application.
 - pos_cash: Traite et prépare les données du tableau POS_CASH_balance.
 - installments_payments: Traite et prépare les données du tableau installments_payments.
-- credit_card_balance: Traite les données de solde de carte de crédit, effectue des agrégations, et crée de nouvelles fonctionnalités.
+- credit_card_balance: Traite les données de solde de carte de crédit, effectue des agrégations, 
+et crée de nouvelles fonctionnalités.
 - aggreger: Aggrège les différentes tables et réalise le pré-traitement global.
 
 Exemple d'utilisation:
@@ -38,9 +43,9 @@ Exemple d'utilisation:
 7. Aggréger l'ensemble des données pour la modélisation :
    aggregated_data = aggreger()
 """
+import gc
 import pandas as pd
 import numpy as np
-import gc
 
 # Définition de la fonction de codage one-hot
 def one_hot_encoder(df, nan_as_category=True):
@@ -49,7 +54,8 @@ def one_hot_encoder(df, nan_as_category=True):
 
     Args:
         df (DataFrame): Le DataFrame contenant les données.
-        nan_as_category (bool, optional): Indique si les valeurs manquantes doivent être traitées comme une catégorie. 
+        nan_as_category (bool, optional): Indique si les valeurs manquantes 
+        doivent être traitées comme une catégorie. 
             Par défaut, True.
 
     Returns:
@@ -58,22 +64,23 @@ def one_hot_encoder(df, nan_as_category=True):
     """
     # Récupère les noms des colonnes d'origine
     original_columns = list(df.columns)
-    
+
     # Sélectionne les colonnes catégorielles
     categorical_columns = [col for col in df.columns if df[col].dtype == 'object']
-    
+
     # Effectue le codage one-hot des colonnes catégorielles
     df = pd.get_dummies(df, columns=categorical_columns, dummy_na=nan_as_category)
-    
+
     # Obtiens les noms des nouvelles colonnes créées
     new_columns = [c for c in df.columns if c not in original_columns]
-    
+
     return df, new_columns
 
 # Définition de la fonction de sélection des caractéristiques
 def select_features(df, columns_list, columns_to_keep, threshold=0.7):
     """
-    Sélectionne les caractéristiques avec un taux de remplissage d'au moins `threshold` et selon une liste de features pré-défini.
+    Sélectionne les caractéristiques avec un taux de remplissage d'au moins
+    `threshold` et selon une liste de features pré-défini.
 
     Args:
         df (DataFrame): Le DataFrame contenant les données.
@@ -84,12 +91,12 @@ def select_features(df, columns_list, columns_to_keep, threshold=0.7):
         selected_features (list): La liste des caractéristiques sélectionnées.
     """
     selected_columns = []
-    
+
     for feature in columns_list:
         fill_rate = df[feature].isna().sum()/ len(df)
         if fill_rate >= threshold:
             selected_columns.append(feature)
-    
+
     selected_columns.append(columns_to_keep)
     df = df[selected_columns]
 
@@ -98,7 +105,8 @@ def select_features(df, columns_list, columns_to_keep, threshold=0.7):
 # Définition de la fonction d'application_train_test
 def application_train_test(nan_as_category=False, selected_columns=None):
     """
-    Chargement des données d'entraînement et de test, prétraitement et création de nouvelles fonctionnalités.
+    Chargement des données d'entraînement et de test, prétraitement et création 
+    de nouvelles fonctionnalités.
 
     :param nan_as_category: Convertir les valeurs NaN en catégories (True/False).
     :param selected_columns: Liste des colonnes à conserver (None pour tout conserver).
@@ -117,8 +125,9 @@ def application_train_test(nan_as_category=False, selected_columns=None):
     # Filtre les colonnes sélectionnées
     if selected_columns:
         df = df.loc[:, df.columns.isin(selected_columns)]
-    
-    # Optionnel : Supprime les 4 applications avec CODE_GENDER 'XNA' (dans l'ensemble d'entraînement)
+
+    # Supprime les 4 applications avec CODE_GENDER 'XNA'
+    # (dans l'ensemble d'entraînement)
     df = df[df['CODE_GENDER'] != 'XNA']
 
     # Encode les caractéristiques catégorielles binaires (0 ou 1 ; deux catégories)
@@ -145,18 +154,18 @@ def application_train_test(nan_as_category=False, selected_columns=None):
     return df
 
 # Définition de la fonction bureau_and_balance
-def bureau_and_balance(num_rows=None, nan_as_category=True, selected_columns=None):
+def bureau_and_balance(nan_as_category=True):
     """
     Cette fonction réalise une agrégation des données des tableaux bureau et bureau_balance, 
     effectue des transformations et renvoie un nouveau dataframe contenant les résultats.
 
-    :param num_rows: Le nombre de lignes à utiliser (facultatif).
-    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées comme une catégorie (par défaut à True).
-    :param selected_columns: Liste des colonnes à conserver (None pour tout conserver).
+    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées 
+    comme une catégorie (par défaut à True).
 
-    :return: Un dataframe contenant les agrégations et transformations des données bureau et bureau_balance.
+    :return: Un dataframe contenant les agrégations et transformations 
+    des données bureau et bureau_balance.
     """
-    # Chargement des données 
+    # Chargement des données
     bureau = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/bureau.csv")
     bb = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/bureau_balance.csv")
 
@@ -223,7 +232,8 @@ def previous_applications(nan_as_category=True):
     """
     Cette fonction traite et prépare les données du tableau previous_application.
 
-    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées comme une catégorie (par défaut à True).
+    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées 
+    comme une catégorie (par défaut à True).
     :return: Le dataframe previous_application traité.
     """
     # Chargement des données
@@ -259,7 +269,7 @@ def previous_applications(nan_as_category=True):
     # Agrégation des données pour chaque SK_ID_CURR
     prev_agg = prev.groupby('SK_ID_CURR').agg({**num_aggregations, **cat_aggregations})
     prev_agg.columns = pd.Index(['PREV_' + e[0] + "_" + e[1].upper() for e in prev_agg.columns.tolist()])
-    
+  
     # Applications précédentes approuvées : uniquement des caractéristiques numériques
     approved = prev[prev['NAME_CONTRACT_STATUS_Approved'] == 1]
     approved_agg = approved.groupby('SK_ID_CURR').agg(num_aggregations)
@@ -274,7 +284,7 @@ def previous_applications(nan_as_category=True):
 
     del refused, approved, prev, refused_agg, approved_agg, 
     gc.collect()
-    
+
     return prev_agg
 
 # Définition de la fonction pos_cash
@@ -282,7 +292,8 @@ def pos_cash(nan_as_category=True):
     """
     Cette fonction traite et prépare les données du tableau POS_CASH_balance.
 
-    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées comme une catégorie (par défaut à True).
+    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées comme une 
+    catégorie (par défaut à True).
     :return: Le dataframe POS_CASH_balance traité.
     """
     pos = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/POS_CASH_balance.csv")
@@ -316,7 +327,8 @@ def installments_payments(nan_as_category=True):
     """
     Cette fonction traite et prépare les données du tableau installments_payments.
 
-    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées comme une catégorie (par défaut à True).
+    :param nan_as_category: Détermine si les valeurs NaN doivent être traitées 
+    comme une catégorie (par défaut à True).
     :return: Le dataframe installments_payments traité.
     """
 
@@ -364,7 +376,8 @@ def installments_payments(nan_as_category=True):
 # Définition de la fonction credit_card_balance
 def credit_card_balance(nan_as_category=True):
     """
-    Traite les données de solde de carte de crédit, effectue des agrégations et crée de nouvelles fonctionnalités.
+    Traite les données de solde de carte de crédit, effectue des 
+    agrégations et crée de nouvelles fonctionnalités.
 
     Args:
         nan_as_category (bool): Si True, traite les valeurs manquantes comme une catégorie.
@@ -375,10 +388,10 @@ def credit_card_balance(nan_as_category=True):
     """
     # Chargez les données du solde de la carte de crédit
     cc = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/credit_card_balance.csv")
- 
+
     # Applique l'encodage one-hot si nécessaire
     cc, cat_cols = one_hot_encoder(cc, nan_as_category=nan_as_category)
-    
+
     # Supprime la colonne SK_ID_PREV
     cc.drop(['SK_ID_PREV'], axis=1, inplace=True)
 
@@ -406,27 +419,29 @@ def credit_card_balance(nan_as_category=True):
 
     for cat in cat_cols:
         aggregations[cat] = ['mean']
-        
+ 
     # Effectue des agrégations
     cc_agg = cc.groupby('SK_ID_CURR').agg(aggregations)
     cc_agg.columns = pd.Index(['CC_' + e[0] + "_" + e[1].upper() for e in cc_agg.columns.tolist()])
-    
+
     # Compte le nombre de lignes de carte de crédit
     cc_agg['CC_COUNT'] = cc.groupby('SK_ID_CURR').size()
-    
+
     # Nettoie la mémoire
     del cc
     gc.collect()
-    
+
     return cc_agg
 
 # Définition de la fonction aggreg
 def aggreger(debug=False):
     """
-    Fonction qui aggrège les différentes tables et réalise le pré-traitement (encodqge, valeurs abbérantes, etc.)
+    Fonction qui aggrège les différentes tables et réalise le pré-traitement
+    (encodqge, valeurs abbérantes, etc.)
 
     Args:
-        debug (bool): Indique si le mode de débogage est activé (utilisation d'un nombre limité de lignes).
+        debug (bool): Indique si le mode de débogage est activé 
+        (utilisation d'un nombre limité de lignes).
 
     Returns:
         None
@@ -440,7 +455,7 @@ def aggreger(debug=False):
     print("Application shape:", df.shape)
 
     # Étape 1 : Bureau and Bureau Balance
-    bureau = bureau_and_balance(num_rows,)
+    bureau = bureau_and_balance()
     print("Bureau df shape:", bureau.shape)
     df = df.join(bureau, how='left', on='SK_ID_CURR')
     del bureau
@@ -474,14 +489,14 @@ def aggreger(debug=False):
     df = df.join(cc, how='left', on='SK_ID_CURR')
     del cc
     gc.collect()
-    
+
     return df
 
 if __name__ == '__main__':
     data = aggreger()
 
-    chemin_acces_csv = "Data/cleaned/data_agregg.csv"
+    CHEMIN_ACCES_CSV = "Data/cleaned/data_agregg.csv"
 
-    data.to_csv(chemin_acces_csv, index=False)
+    data.to_csv(CHEMIN_ACCES_CSV, index=False)
 
-    print(f"Fichier CSV enregistré avec succès à l'emplacement : {chemin_acces_csv}")
+    print(f"Fichier CSV enregistré avec succès à l'emplacement : {CHEMIN_ACCES_CSV}")

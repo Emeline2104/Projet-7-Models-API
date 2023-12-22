@@ -4,9 +4,10 @@ Script de prétraitement pour la tâche de classification de crédit.
 Auteur : Emeline Tapin
 Date de création : 21/11/2023
 
-Ce script comprend des fonctions pour charger, prétraiter, agréger et créer de nouvelles fonctionnalités pour la classification de crédit.
-Le script contient des fonctions pour traiter différentes tables de données, telles que les données d'application, les données du bureau, les données d'application précédente,
-POS_CASH_balance, installments payments et credit card balance.
+Ce script comprend des fonctions pour charger, prétraiter, agréger et créer de nouvelles fonctionnalités 
+pour la classification de crédit.
+Le script contient des fonctions pour traiter différentes tables de données, telles que les données d'application, 
+les données du bureau, les données d'application précédente, POS_CASH_balance, installments payments et credit card balance.
 
 Dépendances :
 - pandas
@@ -18,7 +19,8 @@ Exemple :
 1. Sélectionnez les caractéristiques avec un taux de valeur manquante inférieur à 0.5 :
    df = select_features(df)
 
-2. Divisez les données en ensembles d'entraînement/validation et de test, et traitez les valeurs manquantes :
+2. Divisez les données en ensembles d'entraînement/validation et de test,
+et traitez les valeurs manquantes :
    train_x, train_y, test_x, test_y = split_data(df)
    train_x, test_x, train_y, test_y = handle_missing_values(train_x, test_x, train_y, test_y)
 
@@ -26,10 +28,10 @@ Exemple :
    clean_feature_names(df)
 """
 from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
 from sklearn.utils import class_weight
+from imblearn.over_sampling import SMOTE
 import numpy as np
-import pandas as pd 
+import pandas as pd
 
 def select_features(df, threshold=0.5):
     """
@@ -43,15 +45,17 @@ def select_features(df, threshold=0.5):
         selected_features (list): La liste des caractéristiques sélectionnées.
     """
     selected_columns = []
-    
-    selected_columns = [feature for feature in df.columns if df[feature].isna().sum() / len(df) < threshold]
- 
+
+    selected_columns = [
+        feature for feature in df.columns if df[feature].isna().sum() / len(df) < threshold
+        ]
+
     keys = ['SK_ID_BUREAU',
                 'SK_ID_CURR',
                 'SK_ID_BUREAU',
                 'SK_ID_PREV',
                 'TARGET', 
-                ]   
+                ]
 
     selected_columns.append(keys)
     selected_columns.append('TARGET')
@@ -64,14 +68,15 @@ def split_data(df):
     """
     Prétraitement des données.
 
-    Cette fonction divise les données en ensembles d'entraînement/validation et de test, extrait les indices,
-    et sépare les caractéristiques (features) de la variable cible pour l'entraînement et la validation.
+    Cette fonction divise les données en ensembles d'entraînement/validation et de test, 
+    extrait les indices, et sépare les caractéristiques (features) de la variable 
+    cible pour l'entraînement et la validation.
 
     :param df: DataFrame contenant les données d'entraînement et de test.
     
     :return: train_x, train_y, test_x, test_y
     """
-    
+
     # Divise les données en ensembles d'entraînement/validation et de test
     train_df = df[df['TARGET'].notnull()]
 
@@ -83,7 +88,7 @@ def split_data(df):
 
     # Sépare les caractéristiques et la cible pour l'ensemble d'entraînement
     train_x, train_y = train_df[feats].loc[train_idx], train_df['TARGET'].loc[train_idx]
-    
+
     # Sépare les caractéristiques et la cible pour l'ensemble de validation
     test_x, test_y = train_df[feats].loc[test_idx], train_df['TARGET'].loc[test_idx]
 
@@ -94,7 +99,8 @@ def handle_missing_values(train_x, test_x, train_y, test_y):
     Gestion des valeurs manquantes dans les ensembles d'entraînement et de test.
 
     Cette fonction permet de supprimer les lignes contenant des valeurs manquantes dans les ensembles
-    d'entraînement et de test, tout en maintenant la cohérence entre les caractéristiques et les cibles.
+    d'entraînement et de test, tout en maintenant la cohérence entre les caractéristiques 
+    et les cibles.
 
     :param train_x: Caractéristiques de l'ensemble d'entraînement.
     :param test_x: Caractéristiques de l'ensemble de test.
@@ -137,7 +143,8 @@ def preprocessor(df, model_type, balance=None):
 
     Args:
         df (DataFrame): DataFrame contenant les données d'entraînement et de test.
-        model_type (str): Type de modèle ('dummy', 'reg_log', 'kfold_lightgbm', 'random_forest', etc.).
+        model_type (str): Type de modèle ('dummy', 'reg_log', 'kfold_lightgbm',
+        'random_forest', etc.).
         balance (str): Indique le mode de gestion du déséquilibre de classes.
 
     Returns:
@@ -159,11 +166,19 @@ def preprocessor(df, model_type, balance=None):
         if balance == 'SMOTE':
             smote = SMOTE(sampling_strategy='auto', random_state=42)
             train_x, train_y = smote.fit_resample(train_x, train_y)
+            class_weight_dict = None
+            print("Ah")
         elif balance == 'class_weight':
-            class_weights = class_weight.compute_class_weight('balanced', classes=np.unique(train_y), y=train_y)
+            class_weights = class_weight.compute_class_weight(
+                'balanced',
+                classes=np.unique(train_y),
+                y=train_y,
+                )
             class_weight_dict = dict(enumerate(class_weights))
+            print("B")
         else:
             class_weight_dict = None
+            print("C")
     else:
         class_weight_dict = None
 
@@ -176,11 +191,13 @@ def preprocessor(df, model_type, balance=None):
 
 def preprocessor_api(df, model_type, balance=None):
     """
-    Réalise le prétraitement des données en fonction du type de modèle et de la gestion du déséquilibre.
+    Réalise le prétraitement des données en fonction du type de modèle 
+    et de la gestion du déséquilibre.
 
     Args:
         df (DataFrame): DataFrame contenant les données d'entraînement et de test.
-        model_type (str): Type de modèle ('dummy', 'reg_log', 'kfold_lightgbm', 'random_forest', etc.).
+        model_type (str): Type de modèle ('dummy', 'reg_log', 'kfold_lightgbm', 
+        'random_forest', etc.).
         balance (str): Indique le mode de gestion du déséquilibre de classes.
 
     Returns:
@@ -193,6 +210,9 @@ def preprocessor_api(df, model_type, balance=None):
     feats = [f for f in df.columns if f not in ['TARGET', 'SK_ID_CURR', 'SK_ID_BUREAU', 'SK_ID_PREV', 'index']]
 
     df = df[feats]
+
+    # Remplacement des valeurs None par NaN
+    df.replace({None: np.nan}, inplace=True)
 
     # Gestion des valeurs manquantes
     if model_type in ['dummy', 'reg_log', 'random_forest','lgbm'] or (model_type == 'lgbm' and balance == 'SMOTE'):

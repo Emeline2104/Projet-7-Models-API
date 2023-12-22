@@ -1,23 +1,33 @@
 """
 Module de prétraitement et d'entraînement de modèle.
 
-Ce module contient des fonctions pour le prétraitement des données, la sélection de caractéristiques,
-l'entraînement de modèles, et l'évaluation des performances. Les fonctions sont conçues pour faciliter
+Ce module contient des fonctions pour le prétraitement des données, 
+la sélection de caractéristiques, l'entraînement de modèles, et 
+l'évaluation des performances. Les fonctions sont conçues pour faciliter
 le développement et la validation de modèles de prédiction de défaut de paiement.
 
 Auteur: Emeline Tapin
 Date de création: 21/11/2023
 
 Fonctions:
-    - custom_scorer(y_true, y_pred): Calcule un score personnalisé basé sur le déséquilibre du coût métier entre les faux positifs (FP) et les faux négatifs (FN).
-    - find_optimal_threshold(y_true, probas): Trouve le seuil optimal pour la classification binaire en évaluant différentes valeurs de seuil.
-    - create_pipeline(model_selec): Crée un pipeline avec mise à l'échelle des caractéristiques et le modèle sélectionné.
-    - train_model_CV(pipeline, train_x, train_y, param_grid, balance): Entraîne un modèle à l'aide d'une GridSearchCV.
-    - select_important_features_threeshold(model, train_x, test_x, threshold=0.005): Sélectionne les caractéristiques importantes basées sur le modèle.
-    - select_top_features(model, train_x, test_x, num_features=50): Sélectionne les caractéristiques importantes basées sur le modèle.
-    - train_model_with_best_params(pipeline, train_x, train_y, best_params, balance): Entraîne un modèle avec les meilleurs hyperparamètres spécifiés.
-    - evaluate_model(trained_model, test_x, test_y): Évalue le modèle entraîné sur l'ensemble de test.
-    - train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_selec, param_grid, balance, sample=None): Entraîne et évalue un modèle.
+    - custom_scorer(y_true, y_pred): 
+    Calcule un score personnalisé basé sur le déséquilibre du coût métier entre les faux positifs (FP) et les faux négatifs (FN).
+    - find_optimal_threshold(y_true, probas): 
+    Trouve le seuil optimal pour la classification binaire en évaluant différentes valeurs de seuil.
+    - create_pipeline(model_selec): 
+    Crée un pipeline avec mise à l'échelle des caractéristiques et le modèle sélectionné.
+    - train_model_CV(pipeline, train_x, train_y, param_grid, balance): 
+    Entraîne un modèle à l'aide d'une GridSearchCV.
+    - select_important_features_threeshold(model, train_x, test_x, threshold=0.005): 
+    Sélectionne les caractéristiques importantes basées sur le modèle.
+    - select_top_features(model, train_x, test_x, num_features=50): 
+    Sélectionne les caractéristiques importantes basées sur le modèle.
+    - train_model_with_best_params(pipeline, train_x, train_y, best_params, balance): 
+    Entraîne un modèle avec les meilleurs hyperparamètres spécifiés.
+    - evaluate_model(trained_model, test_x, test_y): 
+    Évalue le modèle entraîné sur l'ensemble de test.
+    - train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_selec, param_grid, balance, sample=None): 
+    Entraîne et évalue un modèle.
 
 Dépendances:
     - numpy
@@ -27,25 +37,28 @@ Dépendances:
     - imblearn
     - mlflow
 """
-from scr.models.feature_importance import explainer_lime
-import numpy as np
+import sys
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
+from scr.models.feature_importance import explainer_lime, show_feature_importance
 import time
+import numpy as np
+import joblib
+import dill
+import mlflow
+from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils import class_weight
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
-from sklearn.pipeline import Pipeline
-import joblib
-import dill
-
-# Dépendances MLflow
-import mlflow
 
 def custom_scorer(y_true, y_pred):
     """
-    Calcule un score personnalisé basé sur le déséquilibre du coût métier entre les faux positifs (FP) et les faux négatifs (FN).
+    Calcule un score personnalisé basé sur le déséquilibre du coût métier entre les faux positifs (FP) 
+    et les faux négatifs (FN).
 
     Parameters:
         y_true (array-like): Les vraies étiquettes de classe.
@@ -137,17 +150,21 @@ def train_model_CV(pipeline, train_x, train_y, param_grid, balance):
 
     Returns:
     estimator: Meilleur modèle entraîné.
-    """    
+    """
     if balance == 'class_weight':
-        class_weights = class_weight.compute_class_weight('balanced', classes=np.unique(train_y), y=train_y)
+        class_weights = class_weight.compute_class_weight(
+            'balanced',
+            classes=np.unique(train_y),
+            y=train_y,
+            )
         class_weight_dict = dict(enumerate(class_weights))
         pipeline.set_params(classifier__class_weight=class_weight_dict)
     elif balance == 'SMOTE':
         smote = SMOTE(sampling_strategy='auto', random_state=42)
         train_x, train_y = smote.fit_resample(train_x, train_y)
-    else: 
+    else:
         class_weight_dict = None
-    
+
     cv=StratifiedKFold(n_splits=5)
 
     debut_temps_train = time.time()
@@ -157,7 +174,7 @@ def train_model_CV(pipeline, train_x, train_y, param_grid, balance):
     temps_train = fin_temps_train - debut_temps_train
 
     print("Best params",grid_search.best_params_)
-    
+
     mlflow.log_param("Best param", grid_search.best_params_)
     mlflow.log_metric("Temps entrainement", temps_train)
 
@@ -185,10 +202,10 @@ def select_important_features_threeshold(model, train_x, test_x, threshold=0.005
     important_features = train_x.columns[coefficients > threshold]
 
     print('Nombre de features sélectionné:', len(important_features))
-    
+
     # Ensure selected features exist in both train_x and test_x
     selected_features = train_x.columns.intersection(test_x.columns)
-    
+
     train_x = train_x[selected_features]
     test_x = test_x[selected_features]
 
@@ -212,13 +229,8 @@ def select_top_features(model, train_x, test_x, num_features=50):
     """
     num_features = len(train_x.columns)
     if isinstance(model.named_steps['classifier'], LogisticRegression):
-        # Pour la régression logistique, nous n'avons pas de feature_importances_
-        # Nous pourrions utiliser les coefficients absolus comme mesure d'importance
         coefficients = np.abs(model.named_steps['classifier'].coef_[0])
     elif isinstance(model.named_steps['classifier'], DummyClassifier):
-        # Pour le DummyClassifier, nous n'avons pas de mécanisme standard pour mesurer l'importance des caractéristiques
-        # Vous pouvez ajouter le traitement spécifique pour le DummyClassifier ici
-        # Par exemple, sélectionnez simplement les premières caractéristiques sans critère d'importance
         coefficients = np.ones(len(train_x.columns))
     else:
         coefficients = model.named_steps['classifier'].feature_importances_
@@ -233,10 +245,10 @@ def select_top_features(model, train_x, test_x, num_features=50):
     important_features = train_x.columns[selected_feature_indices]
 
     print('Nombre de features sélectionné:', len(important_features))
-    
+
     # Ensure selected features exist in both train_x and test_x
     selected_features = train_x.columns.intersection(test_x.columns)
-    
+
     train_x = train_x[selected_features]
     test_x = test_x[selected_features]
     print(train_x.shape)
@@ -261,15 +273,19 @@ def train_model_with_best_params(pipeline, train_x, train_y, best_params, balanc
     estimator: Modèle entraîné.
     """
     if balance == 'class_weight':
-        class_weights = class_weight.compute_class_weight('balanced', classes=np.unique(train_y), y=train_y)
+        class_weights = class_weight.compute_class_weight(
+            'balanced',
+            classes=np.unique(train_y),
+            y=train_y,
+            )
         class_weight_dict = dict(enumerate(class_weights))
         pipeline.set_params(classifier__class_weight=class_weight_dict)
     elif balance == 'SMOTE':
         smote = SMOTE(sampling_strategy='auto', random_state=42)
         train_x, train_y = smote.fit_resample(train_x, train_y)
-    else: 
+    else:
         class_weight_dict = None
-    
+
     # Mise à jour des hyperparamètres du modèle dans le pipeline avec les meilleurs paramètres
     updated_pipeline = pipeline.set_params(**best_params)
 
@@ -293,12 +309,18 @@ def evaluate_model(trained_model, test_x, test_y):
     """
     # Prédictions sur l'ensemble de test
     debut_temps_inference = time.time()
+    probas = trained_model.predict_proba(test_x)
+    # Enregistrement des probabilités dans un fichier
     probas = trained_model.predict_proba(test_x)[:, 1]
     fin_temps_inference = time.time()
     temps_inference = fin_temps_inference - debut_temps_inference
 
     # Calcul du seuil optimal
     meilleur_seuil = find_optimal_threshold(test_y, probas)
+
+    # Enregistrement dans un fichier texte
+    with open("models/meilleur_seuil.txt", "w") as fichier:
+        fichier.write(str(meilleur_seuil))
 
     # Utilisation du seuil optimal pour prédire les classes
     predictions_avec_seuil = (probas >= meilleur_seuil).astype(int)
@@ -328,10 +350,7 @@ def evaluate_model(trained_model, test_x, test_y):
         "Temps d'inférence": temps_inference
     }
 
-    mlflow.end_run()
-    
     return metrics_dict
-
 
 def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_selec, param_grid, balance, sample=None):
     """
@@ -350,12 +369,17 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
     Returns:
     Pipeline: Meilleur modèle entraîné.
     """
-    if sample is not None: 
-        train_x, _, train_y, _ = train_test_split(train_x_all, train_y_all, test_size=0.92, random_state=42)
-    else : 
+    if sample is not None:
+        train_x, _, train_y, _ = train_test_split(
+            train_x_all,
+            train_y_all,
+            test_size=0.92,
+            random_state=42,
+            )
+    else :
         train_x = train_x_all
         train_y = train_y_all
-        
+     
     # Crée un pipeline
     pipeline = create_pipeline(model_selec)
 
@@ -363,53 +387,45 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
     model_HP, best_params = train_model_CV(pipeline, train_x, train_y, param_grid, balance)
 
     # Sélectionne les caractéristiques importantes
-    train_x_selected, test_x_selected = select_important_features_threeshold(model_HP, train_x_all, test_x)
+    train_x_selected, test_x_selected = select_important_features_threeshold(
+        model_HP,
+        train_x_all,
+        test_x)
     print("Taille jeux d'entrainement sélec",train_x_selected.shape)
     print("Taille jeux de test sélec",test_x_selected.shape)
 
     # Utilisation du nouveau modèle pour l'entraînement
-    trained_model = train_model_with_best_params(pipeline, train_x_selected, train_y_all, best_params, balance)
+    trained_model = train_model_with_best_params(
+        pipeline,
+        train_x_selected,
+        train_y_all,
+        best_params,
+        balance,
+        )
 
     # Evaluation du modèlé
     evaluate_model(trained_model, test_x_selected, test_y)
     test_x_selected.head().to_csv("Data/sampled/test_x_selected_head.csv", index=False)
-
-    # feature importance 
-    print(np.any(np.isfinite(train_x)))
-    # print(train_x.max())
-    # Fonction de prédiction pour LIME
-    #def predict_fn(x):
-        # Assurez-vous que le modèle retourne des probabilités pour chaque classe
-        #return trained_model.predict_proba(x, num_iteration=trained_model.best_iteration_)[:, 1]
 
     def predict_fn(x):
         # Assuming 'model' is your trained LightGBM binary classification model
         return trained_model.predict(x, num_iteration=trained_model.best_iteration_)
 
     # Expliquer les caractéristiques importantes avec LIME
-    #explainer_features_importance = explainer_lime(train_x_selected, train_y_all, predict_fn=predict_fn)
-
-    # Calcul des caractéristiques importantes pour une instance spécifique
-    #instance_idx = 0
-    #explanation = explainer_features_importance.explain_instance(
-    #    train_x_selected.iloc[instance_idx],
-    #    predict_fn,
-    #    num_features=len(train_x_selected.columns),
-    #)
-
-    # Obtention des caractéristiques importantes sous forme de liste
-    #feature_importance_list = explanation.as_list()
-    #print("Feature Importance List:", feature_importance_list)
-
-    # Sauvegarde manuelle des caractéristiques importantes
-    #explainer_features_importance_info = {
-    #    'feature_importance': feature_importance_list,
-    #    'other_info': 'other_info_value'  # Ajoutez d'autres informations nécessaires
-    #}
+    explainer_features_importance = explainer_lime(
+        train_x_selected,
+        train_y_all,
+        predict_fn=predict_fn,
+        )
 
     # Enregistrez l'explainer
-    #with open("explainer_info.dill", "wb") as file:
-    #    dill.dump(explainer_features_importance, file)
+    with open("models/explainer_info.dill", "wb") as file:
+        dill.dump(explainer_features_importance, file)
 
+    # Enregistre la feature importance globale
+    show_feature_importance(trained_model, train_x_selected.columns)
 
-    return trained_model, _
+    mlflow.sklearn.log_model(trained_model, "trained_model")
+    mlflow.end_run()
+
+    return trained_model
