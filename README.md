@@ -66,7 +66,17 @@ Fichier listant les packages utilisés seront présents dans les dossiers (*[]()
 ## Structure du Projet
 
 Le projet est organisé de la manière suivante :
-
+- **.github/workflows**: 
+  - **tests.yml**: Fichier de configuration pour les workflows GitHub.
+- **Data/sampled**: Données sélectionnées pour le déploiement Cloud Heroku.
+  - **POS_CASH_balance_selected.csv**
+  - **application_train_selected.csv**
+  - **bureau_balance_selected.csv**
+  - **bureau_selected.csv**
+  - **credit_card_balance_selected.csv**
+  - **installments_payments_selected.csv**
+  - **previous_application_selected.csv**
+  - **test_x_selected_head.csv**
 - **scr**: Le répertoire principal du code source.
   - **config.py**: Fichier de configuration pour le projet.
   - **data_drift_analysis**: Contient les scripts liés à l'analyse de data drift.
@@ -83,53 +93,15 @@ Le projet est organisé de la manière suivante :
     - **aggregation.py**: Script pour l'agrégation des données.
     - **pre_processing.py**: Script pour le nettoyage et l'ingénierie des fonctionnalités.
   - **test_model.py**: Script pour les tests unitaires du modèle.
+- **.gitignore**: Fichier spécifiant les fichiers et dossiers à ignorer dans le suivi git.
+- **Procfile**: Fichier spécifiant les commandes à exécuter lors du déploiement de l'application.
+- **README.md**: Documentation principale du projet.
+- **feature_imortance_global.csv**: Fichier CSV contenant l'importance globale des fonctionnalités.
+- **makefile**: Fichier de configuration pour la compilation et l'exécution du projet.
+- **requirements.txt**: Liste des dépendances du projet.
+- **run_tests.sh**: Script pour exécuter les tests du projet sur GitHub.
+- **runtime.txt**: Fichier spécifiant la version de Python à utiliser pour le projet.
 
-Projet-7-Models-API
-├── .github/workflows
-│ └── Update tests.yml
-├── Data
-│ └── sampled
-│ ├── POS_CASH_balance_selected.csv
-│ ├── application_train_selected.csv
-│ ├── bureau_balance_selected.csv
-│ ├── bureau_selected.csv
-│ ├── credit_card_balance_selected.csv
-│ ├── installments_payments_selected.csv
-│ ├── previous_application_selected.csv
-│ └── test_x_selected_head.csv
-├── github/workflows
-│ └── maj localisation tests
-├── models
-│ └── Models
-├── notebook
-│ └── EDA
-├── scr
-│ ├── data_drift_analysis
-│ │ ├── data_drift.py
-│ │ └── data_drift_report.html
-│ ├── flask_api.py
-│ ├── models
-│ │ ├── feature_importance.py
-│ │ ├── main.py
-│ │ ├── model_training.py
-│ │ └── models_selec.py
-│ ├── models_saved
-│ │ ├── best_model.pkl
-│ │ ├── explainer_info.dill
-│ │ └── meilleur_seuil.txt
-│ ├── preprocessing
-│ │ ├── aggregation.py
-│ │ └── pre_processing.py
-│ └── test_model.py
-├── .gitignore
-├── Procfile
-├── README.md
-├── feature_imortance_global.csv
-├── makefile
-├── requirements.txt
-├── run_tests.sh
-├── runtime.txt
-├── TAPIN_Emeline_3_note_méthodologique_122023.pages
 ## Installation et exécution 
 
 ### Installation
