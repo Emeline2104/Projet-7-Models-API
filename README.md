@@ -1,4 +1,4 @@
-# Projet-7 - Prêt à Dépenser - Modèle de Scoring & Dashboard
+# Projet-7 - Prêt à Dépenser - Modèle de Scoring & API
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Emeline2104/Projet-7-Models-API/Tests?label=Tests)](https://github.com/Emeline2104/Projet-7-Models-API/actions/workflows/tests.yml)
 
