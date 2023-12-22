@@ -63,6 +63,27 @@ Tableau HTML du data drift réalisé à partir d’evidently (*[data_drift_repor
 Fichier introductif permettant de comprendre l'objectif du projet et le découpage des dossiers (*[]()*).
 Fichier listant les packages utilisés seront présents dans les dossiers (*[]()*).
 
+## Structure du Projet
+
+Le projet est organisé de la manière suivante :
+
+- **scr**: Le répertoire principal du code source.
+  - **config.py**: Fichier de configuration pour le projet.
+  - **data_drift_analysis**: Contient les scripts liés à l'analyse de data drift.
+    - **data_drift.py**: Script d'analyse de data drift.
+    - **data_drift_report.html**: Rapport HTML généré à partir de l'analyse de data drift.
+  - **flask_api.py**: Script principal de l'API Flask.
+  - **models**: Contient les scripts liés à la modélisation.
+    - **feature_importance.py**: Script pour l'analyse de l'importance des fonctionnalités.
+    - **main.py**: Script principal pour le prétraitement et l'entraînement des modèles.
+    - **model_training.py**: Script contenant les fonctions d'entraînement des modèles.
+    - **models_selec.py**: Script pour la sélection des modèles.
+  - **models_saved**: Contient les modèles sauvegardés.
+  - **preprocessing**: Scripts pour le prétraitement des données.
+    - **aggregation.py**: Script pour l'agrégation des données.
+    - **pre_processing.py**: Script pour le nettoyage et l'ingénierie des fonctionnalités.
+  - **test_model.py**: Script pour les tests unitaires du modèle.
+  - 
 ## Installation et exécution 
 
 ### Installation
