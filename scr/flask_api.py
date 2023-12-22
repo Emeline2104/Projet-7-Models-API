@@ -16,8 +16,9 @@ Variables globales :
 - explainer : Explainer utilisé pour calculer l'importance des caractéristiques avec LIME.
 
 Chargement des Modèles :
-- Le modèle prédictif est chargé à partir du fichier "models/best_model.pkl".
-- L'explainer est chargé à partir du fichier "models/explainer_info.dill".
+- Le modèle prédictif est chargé à partir du fichier "models_saved/best_model.pkl".
+- L'explainer est chargé à partir du fichier "models_saved
+/explainer_info.dill".
 
 Prétraitement des Données :
 - Les données du client sont prétraitées avant d'être utilisées pour la prédiction.

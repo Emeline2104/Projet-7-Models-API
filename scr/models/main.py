@@ -43,7 +43,7 @@ def main(type_model, balance):
         raise ValueError("Le type de modèle spécifié n'est pas pris en charge.")
 
     # Sérialisation du modèle
-    model_filename = "models/best_model.pkl"
+    model_filename = "scr/models_saved/best_model.pkl"
     joblib.dump(model, model_filename)
 
     print(f"Le modèle a été sérialisé avec succès dans {model_filename}")
