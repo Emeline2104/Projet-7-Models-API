@@ -50,9 +50,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Chemins de fichiers
-model_filename = "scr/models/best_model.pkl"
-explainer_filename = "scr/models/explainer_info.dill"
-seuil_filename = "scr/models/meilleur_seuil.txt"
+model_filename = "models/best_model.pkl"
+explainer_filename = "models/explainer_info.dill"
+seuil_filename = "models/meilleur_seuil.txt"
 
 # Fonctions de chargement
 def load_model(filename):
