@@ -319,7 +319,7 @@ def evaluate_model(trained_model, test_x, test_y):
     meilleur_seuil = find_optimal_threshold(test_y, probas)
 
     # Enregistrement dans un fichier texte
-    with open("models/meilleur_seuil.txt", "w") as fichier:
+    with open("scr/models_saved/meilleur_seuil.txt", "w") as fichier:
         fichier.write(str(meilleur_seuil))
 
     # Utilisation du seuil optimal pour prédire les classes
@@ -419,7 +419,7 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
         )
 
     # Enregistrez l'explainer
-    with open("models/explainer_info.dill", "wb") as file:
+    with open("scr/models_saved/explainer_info.dill", "wb") as file:
         dill.dump(explainer_features_importance, file)
 
     # Enregistre la feature importance globale
