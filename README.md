@@ -15,33 +15,49 @@ Elles incluent des informations comportementales et financières.
 
 ### Méthodologie : 
 #### 1. Analyse exploratoire des données
-Un notebook dédié à l'analyse exploratoire et à l'analyse de la qualité des données a été créé ([EDA.ipynb](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/notebook/EDA.ipynb).
+Un notebook dédié à l'analyse exploratoire et à l'analyse de la qualité des données a été créé ([*EDA.ipynb*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/notebook/EDA.ipynb).
 #### 2. Exploration des méthodes de pré-traitement et de modèles de classification
-Des pipelines ont été mis en place pour le pré-traitement des données et la modélisation de la prédiction des consommations énergétiques des bâtiments [main](https://github.com/Emeline2104/Projet-7-Models-API/tree/main/scr).
-Cela est composé de la manière suivante : 
+Un pipeline a été mis en place pour le pré-traitement des données et les classification d'octroi de crédit (regression logistique, random forest, LGBM) [*main.py*](https://github.com/Emeline2104/Projet-7-Models-API/tree/main/scr).
+Ce projet intègre MLflow, une plateforme open source pour la gestion du cycle de vie des modèles machine learning. Les étapes majeures, de l'entraînement initial à l'enregistrement des modèles, sont enregistrées et suivies grâce à MLflow. 
 #### 3. Analyse Data Drift
+Une analyse de data drift a été réalisé entre les données d'entrainement et test [*data_drift.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift.py) et [data_drift_report.html](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift_report.html)
 #### 4. API
-
-### Outils MLOps : 
-#### MLFlow : 
-Ce projet intègre MLflow, une plateforme open source pour la gestion du cycle de vie des modèles machine learning (ML). 
-Les étapes majeures, de l'entraînement initial à l'enregistrement des modèles, sont enregistrées et suivies grâce à MLflow. 
+Une API Flask a été déployé avec le modèlé sélectionné [*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py) ainsi que les test unitaires nécessaires pour le déploiement automatique [*test_models.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/test_model.py)
 
 ### Livrables : 
+
 #### Notebooks :
-- Notebook de l'analyse exploratoire et de l'analyse de la qualité des données ([1_EDA.ipynb](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/notebooks/1_EDA.ipynb)); 
-- Notebook exploratoire des méthodes utilisées (features engineering & modèles de prédiction) ([2_Prediction_consommation.ipynb](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/notebooks/2_Prediction_consommation.ipynb)); 
+- Notebook de l'analyse exploratoire et de l'analyse de la qualité des données ([EDA.ipynb](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/notebook/EDA.ipynb)); 
   
-#### Scripts : 
-- Script principal du projet (*[main.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/main.py)*) qui effectue les étapes suivantes :
+#### Scripts : Traitant du prétraitement à la prédiction intégrant via MLFlow le tracking d’expérimentations et le stockage centralisé des modèles
+- Script principal du projet (*[main.py]()*) qui effectue les étapes suivantes :
   - Chargement des données à partir du fichier spécifié dans le fichier de configuration (*[config.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/config.py)*); 
   - Nettoyage des données à l'aide d'un pipeline défini dans le module data_cleaning (*[data_cleaning.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/data_cleaning.py)*);
   - Feature Engineering à l'aide d'un pipeline défini dans le module feature_engineering (*[feature_engineering.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/feature_engineering.py)*);
   - Entraînement et évaluation d'un modèle de régression baseline (régression linéaire (RL)) en utilisant le pipeline défini dans le module baseline_model (*[baseline_model.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/models/baseline_model.py)*);
   - Entraînement et évaluation d'un modèle XGBoost en utilisant le pipeline défini dans le module xgboost_model (*[xgboost_model.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/models/xgboost_model.py)*).
-    
+
+  Le code permettant de déployer le modèle sous forme d'API
+
 #### Support de présentation : 
 Un support de présentation de l'analyse exploratoire pour la soutenance est également disponible (*[3_Presentation](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/Presentation.pdf)*).
+Un support de présentation pour la soutenance, détaillant le travail réalisé (Powerpoint ou équivalent, 30slides maximum).
+
+#### Note méthodologique 
+La méthodologie d'entraînement du modèle (2 pages maximum)
+Le traitement du déséquilibre des classes (1 page maximum)
+La fonction coût métier, l'algorithme d'optimisation et la métrique d'évaluation (1 page maximum)
+Un tableau de synthèse des résultats (1 page maximum)
+L’interprétabilité globale et locale du modèle (1 page maximum)
+Les limites et les améliorations possibles (1 page maximum)
+L’analyse du Data Drift (1 page maximum)
+
+#### API déployé sur le cloud 
+Pour les applications dashboard et API, un fichier introductif permettant de comprendre l'objectif du projet et le découpage des dossiers, et un fichier listant les packages utilisés seront présents dans les dossiers
+Le tableau HTML d’analyse de data drift réalisé à partir d’evidently
+Une note méthodologique décrivant :
+
+PArler des models enregistrées ? 
 
 ## Installation et exécution 
 
