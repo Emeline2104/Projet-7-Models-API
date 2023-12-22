@@ -60,7 +60,7 @@ def dummy_classifier(df, balance=None):
                                           model_selec,
                                           param_grid,
                                           balance,
-                                          sample=2000,
+                                          sample=None,
                                           )
 
     return best_model
