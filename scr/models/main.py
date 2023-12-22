@@ -27,7 +27,7 @@ def main(type_model, balance):
     df = aggreger(debug=False)
 
     # Modèle baseline
-    dummy_classifier(df, balance=None)
+    # dummy_classifier(df, balance=None)
 
     # Sélection du modèle à entraîner
     if type_model == 'log':
@@ -50,7 +50,7 @@ def main(type_model, balance):
     return model
 
 if __name__ == "__main__":
-    #model = main('lgbm', 'None')
-    for modele in ['random_forest', 'log', 'lgbm']:
-        for gestion_desequilibre in ['class_weight', 'SMOTE', None]:
-            main(modele, gestion_desequilibre)
+    model = main('lgbm', 'None')
+    #for modele in ['random_forest', 'log', 'lgbm']:
+    #    for gestion_desequilibre in ['class_weight', 'SMOTE', None]:
+    #        main(modele, gestion_desequilibre)
