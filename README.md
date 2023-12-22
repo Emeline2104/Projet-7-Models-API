@@ -1,5 +1,7 @@
 # Projet-7 - Prêt à Dépenser - Modèle de Scoring & Dashboard
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Emeline2104/Projet-7-Models-API/Tests?label=Tests)](https://github.com/Emeline2104/Projet-7-Models-API/actions/workflows/tests.yml)
+
 Ce projet a été réalisé dans le cadre de la formation diplomante de Data Scientist d'OpenClassRooms & CentraleSupelec.
 
 ## A propos du projet : 
@@ -101,7 +103,7 @@ Le projet est organisé de la manière suivante :
 - **run_tests.sh**: Script pour exécuter les tests du projet sur GitHub.
 - **runtime.txt**: Fichier spécifiant la version de Python à utiliser pour le projet.
 
-## Installation et exécution 
+## Exigences
 
 ### Installation
 
