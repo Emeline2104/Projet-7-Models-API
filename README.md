@@ -40,7 +40,7 @@ Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](
   - Analyse de la feature importance (*[feature_importance.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/feature_importance.py))
 
 ##### Scripts de déploiement du modèle via API 
-- Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)
+- Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)).
   
 #### Note méthodologique 
 La note méthodologique comprenant : 
