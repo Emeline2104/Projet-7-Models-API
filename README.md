@@ -22,7 +22,7 @@ Ce projet intègre MLflow, une plateforme open source pour la gestion du cycle d
 #### 3. Analyse Data Drift
 Une analyse de data drift a été réalisé entre les données d'entrainement et test ([*data_drift.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift.py)) et ([data_drift_report.html](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift_report.html)).
 #### 4. API
-Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)) ainsi que les test unitaires nécessaires pour le déploiement automatique ([*test_models.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/test_model.py).
+Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)) ainsi que les test unitaires nécessaires pour le déploiement automatique ([*test_models.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/test_model.py)).
 
 ### Livrables : 
 
