@@ -38,7 +38,6 @@ Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](
   - Fonctions d'entraînement et évaluation de modèles en utilisant le pipeline défini dans le module model_selec (*[model_training.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/model_training.py)*);
   - Pipeline d'entrainement et évaluation de modèles pour les différents alogorithme de classification (DummyClassifier, regression logistique, random forest, LGBM) (*[models_selec.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/models_selec.py)*);
   - Analyse de la feature importance (*[feature_importance.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/feature_importance.py))
-  - Entraînement et évaluation d'un modèle XGBoost en utilisant le pipeline défini dans le module xgboost_model (*[xgboost_model.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/models/xgboost_model.py)*).
 
 ##### Scripts de déploiement du modèle via API 
 - Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)
@@ -54,7 +53,7 @@ La note méthodologique comprenant :
   - L’analyse du Data Drift. 
 
 #### Support de présentation : 
-Un support de présentation pour la soutenance, détaillant le travail réalisé (*[3_Presentation](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/Presentation.pdf)*).
+Un support de présentation pour la soutenance, détaillant le travail réalisé (*[3_Presentation]()*).
 
 ### Le tableau HTML d’analyse de data drift 
 Tableau HTML du data drift réalisé à partir d’evidently (*[data_drift_report.html](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift_report.html)*).
@@ -123,8 +122,8 @@ Pour exécuter le script, assurez-vous d'avoir Python 3.11 ou supérieur install
 ```bash
 python scr/models/main.py
 ```
-Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier [config.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/config.py) selon les besoins de votre projet.
-Pour exécuter le code de ce projet, vous aurez besoin de Python 3.11 ou supérieur. Installez les dépendances à l'aide du fichier `requirements.txt`. -> fichier à faire
+Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier [config.py]() selon les besoins de votre projet.
+Pour exécuter le code de ce projet, vous aurez besoin de Python 3.11 ou supérieur. Installez les dépendances à l'aide du fichier `requirements.txt`.
 
 ```bash
 pip install -r requirements.txt
