@@ -36,7 +36,7 @@ Note :
 - Le script s'exécute en mode débogage avec l'option "debug=True" sur le port 5001.
 
 """
-from preprocessing import pre_processing
+from scr.preprocessing import pre_processing
 from flask import Flask, jsonify, request
 import pandas as pd
 import joblib
