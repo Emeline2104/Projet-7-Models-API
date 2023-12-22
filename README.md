@@ -17,9 +17,10 @@ Elles incluent des informations comportementales et financières.
 #### 1. Analyse exploratoire des données
 Un notebook dédié à l'analyse exploratoire et à l'analyse de la qualité des données a été créé ([EDA.ipynb](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/notebook/EDA.ipynb).
 #### 2. Exploration des méthodes de pré-traitement et de modèles de classification
-Ensemble des scripts du dossier [scr](https://github.com/Emeline2104/Projet-7-Models-API/tree/main/scr).
-Des pipelines ont été mis en place pour le pré-traitement des données et la modélisation de la prédiction des consommations énergétiques des bâtiments ([main.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/main.py)).
+Des pipelines ont été mis en place pour le pré-traitement des données et la modélisation de la prédiction des consommations énergétiques des bâtiments [main](https://github.com/Emeline2104/Projet-7-Models-API/tree/main/scr).
+Cela est composé de la manière suivante : 
 #### 3. Analyse Data Drift
+#### 4. API
 
 ### Outils MLOps : 
 #### MLFlow : 
