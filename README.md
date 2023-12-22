@@ -29,34 +29,35 @@ Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](
 #### Notebooks :
 - Notebook de l'analyse exploratoire et de l'analyse de la qualité des données ([EDA.ipynb](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/notebook/EDA.ipynb)); 
   
-#### Scripts : Traitant du prétraitement à la prédiction intégrant via MLFlow le tracking d’expérimentations et le stockage centralisé des modèles
+#### Scripts de modélisation : Traitant du prétraitement à la prédiction intégrant via MLFlow le tracking d’expérimentations et le stockage centralisé des modèles
 - Script principal du projet (*[main.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/main.py)*) qui effectue les étapes suivantes :
   - Chargement des données à partir du fichier spécifié dans le fichier de configuration (*[config.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/config.py)*);
-  - Aggrégation des données (*[]()*);
-  - Nettoyage des données à l'aide d'un pipeline défini dans le module data_cleaning (*[data_cleaning.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/data_cleaning.py)*);
-  - Feature Engineering à l'aide d'un pipeline défini dans le module feature_engineering (*[feature_engineering.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/feature_engineering.py)*);
-  - Entraînement et évaluation d'un modèle de régression baseline (régression linéaire (RL)) en utilisant le pipeline défini dans le module baseline_model (*[baseline_model.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/models/baseline_model.py)*);
+  - Aggrégation des données (*[aggregation.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/preprocessing/aggregation.py)*);
+  - Nettoyage des données et feature engineering à l'aide d'un pipeline défini dans le module pre_processing (*[pre_processing.py]([https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/data_cleaning.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/preprocessing/pre_processing.py))*);
+  - Fonctions d'entraînement et évaluation de modèles en utilisant le pipeline défini dans le module model_selec (*[model_training.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/model_training.py)*);
+  - Pipeline d'entrainement et évaluation de modèles pour les différents alogorithme de classification (DummyClassifier, regression logistique, random forest, LGBM) (*[models_selec.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/models_selec.py)*);
+  - Analyse de la feature importance (*[feature_importance.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/feature_importance.py))
   - Entraînement et évaluation d'un modèle XGBoost en utilisant le pipeline défini dans le module xgboost_model (*[xgboost_model.py](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/models/xgboost_model.py)*).
 
-  Le code permettant de déployer le modèle sous forme d'API
+#### Scripts de déploiement du modèle via API 
+- Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)
 
 #### Support de présentation : 
-Un support de présentation de l'analyse exploratoire pour la soutenance est également disponible (*[3_Presentation](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/Presentation.pdf)*).
-Un support de présentation pour la soutenance, détaillant le travail réalisé (Powerpoint ou équivalent, 30slides maximum).
+Un support de présentation pour la soutenance, détaillant le travail réalisé (*[3_Presentation](https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/Presentation.pdf)*).
 
 #### Note méthodologique 
-La méthodologie d'entraînement du modèle (2 pages maximum)
-Le traitement du déséquilibre des classes (1 page maximum)
-La fonction coût métier, l'algorithme d'optimisation et la métrique d'évaluation (1 page maximum)
-Un tableau de synthèse des résultats (1 page maximum)
-L’interprétabilité globale et locale du modèle (1 page maximum)
-Les limites et les améliorations possibles (1 page maximum)
-L’analyse du Data Drift (1 page maximum)
+La note méthodologique comprenant : 
+  - La méthodologie d'entraînement du modèle ; 
+  - Le traitement du déséquilibre des classes ; 
+  - La fonction coût métier, l'algorithme d'optimisation et la métrique d'évaluation ;
+  - Un tableau de synthèse des résultats ; 
+  - L’interprétabilité globale et locale du modèle ; 
+  - Les limites et les améliorations possibles ; 
+  - L’analyse du Data Drift ; 
 
 #### API déployé sur le cloud 
 Pour les applications dashboard et API, un fichier introductif permettant de comprendre l'objectif du projet et le découpage des dossiers, et un fichier listant les packages utilisés seront présents dans les dossiers
 Le tableau HTML d’analyse de data drift réalisé à partir d’evidently
-Une note méthodologique décrivant :
 
 PArler des models enregistrées ? 
 
