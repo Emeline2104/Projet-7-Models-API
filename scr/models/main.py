@@ -50,7 +50,9 @@ def main(type_model, balance):
     return model
 
 if __name__ == "__main__":
-    model = main('lgbm', 'None')
     #for modele in ['random_forest', 'log', 'lgbm']:
+    #    print(modele)
     #    for gestion_desequilibre in ['class_weight', 'SMOTE', None]:
+    #        print(gestion_desequilibre)
     #        main(modele, gestion_desequilibre)
+            main('lgbm', 'None')
