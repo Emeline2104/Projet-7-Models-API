@@ -25,6 +25,7 @@ from lime import lime_tabular
 import numpy as np
 import pandas as pd
 from lightgbm import LGBMClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 def explainer_lime(train_x, train_y, predict_fn):
     """
@@ -71,7 +72,7 @@ def show_feature_importance(best_model, feats):
     """
     model = best_model
     # Obtention les coefficients du modèle
-    if isinstance(model, LGBMClassifier):
+    if isinstance(model, (LGBMClassifier, RandomForestClassifier)):
         coefficients =  model.feature_importances_
     else:
         coefficients = model.coef_[0]
