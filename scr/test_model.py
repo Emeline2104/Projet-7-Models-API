@@ -52,8 +52,8 @@ import pytest
 from unittest import mock
 from lightgbm import LGBMClassifier
 
-sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
-sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
+#sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+#sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 
 from .flask_api import (
     load_model,
