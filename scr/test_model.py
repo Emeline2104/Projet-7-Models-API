@@ -55,7 +55,7 @@ from lightgbm import LGBMClassifier
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 
-from scr.flask_api import (
+from .flask_api import (
     load_model,
     load_explainer,
     format_client_data,
@@ -63,16 +63,16 @@ from scr.flask_api import (
     app,
 )
 
-from scr.preprocessing.pre_processing import (
+from .preprocessing.pre_processing import (
     select_features,
     split_data,
     handle_missing_values,
     clean_feature_names,
 )
 
-from scr.preprocessing.aggregation import one_hot_encoder
+from .preprocessing.aggregation import one_hot_encoder
 
-from scr.models.model_training import (
+from .models.model_training import (
     custom_scorer,
     find_optimal_threshold,
     create_pipeline,
