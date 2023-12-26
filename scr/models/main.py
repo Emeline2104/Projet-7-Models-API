@@ -27,7 +27,7 @@ def main(type_model, balance):
     df = aggreger(debug=False)
 
     # Modèle baseline
-    dummy_classifier(df, balance=None)
+    # dummy_classifier(df, balance=None)
 
     # Sélection du modèle à entraîner
     if type_model == 'log':
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     #    for gestion_desequilibre in ['SMOTE', None]:
     #        print(gestion_desequilibre)
     #        main(modele, gestion_desequilibre)
-    main('DummyClassifier', None)
+    main('lgbm', None)
