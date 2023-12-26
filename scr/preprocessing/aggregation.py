@@ -114,8 +114,8 @@ def application_train_test(nan_as_category=False, selected_columns=None):
     :return: DataFrame contenant les données d'entraînement et de test traitées.
     """
     # Charge les données d'entraînement
-    df = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/application_train.csv")
-    test_df = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/application_test.csv")
+    df = pd.read_csv("Data/raw/application_train.csv")
+    test_df = pd.read_csv("Data/raw/application_test.csv")
 
     print("Échantillons d'entraînement : {}, échantillons de test : {}".format(len(df), len(test_df)))
 
@@ -166,8 +166,8 @@ def bureau_and_balance(nan_as_category=True):
     des données bureau et bureau_balance.
     """
     # Chargement des données
-    bureau = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/bureau.csv")
-    bb = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/bureau_balance.csv")
+    bureau = pd.read_csv("Data/raw/bureau.csv")
+    bb = pd.read_csv("Data/raw/bureau_balance.csv")
 
     bb, bb_cat = one_hot_encoder(bb, nan_as_category)
     bureau, bureau_cat = one_hot_encoder(bureau, nan_as_category)
@@ -237,7 +237,7 @@ def previous_applications(nan_as_category=True):
     :return: Le dataframe previous_application traité.
     """
     # Chargement des données
-    prev = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/previous_application.csv")
+    prev = pd.read_csv("Data/raw/previous_application.csv")
 
     # Encodage one-hot des caractéristiques catégorielles
     prev, cat_cols = one_hot_encoder(prev, nan_as_category=nan_as_category)
@@ -296,7 +296,7 @@ def pos_cash(nan_as_category=True):
     catégorie (par défaut à True).
     :return: Le dataframe POS_CASH_balance traité.
     """
-    pos = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/POS_CASH_balance.csv")
+    pos = pd.read_csv("Data/raw/POS_CASH_balance.csv")
 
     # Encodage one-hot des caractéristiques catégorielles
     pos, cat_cols = one_hot_encoder(pos, nan_as_category=nan_as_category)
@@ -332,7 +332,7 @@ def installments_payments(nan_as_category=True):
     :return: Le dataframe installments_payments traité.
     """
 
-    installments_payments_df = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/installments_payments.csv")
+    installments_payments_df = pd.read_csv("Data/raw/installments_payments.csv")
 
     # Encodage one-hot des caractéristiques catégorielles
     ins, cat_cols = one_hot_encoder(installments_payments_df, nan_as_category=nan_as_category)
@@ -387,7 +387,7 @@ def credit_card_balance(nan_as_category=True):
 
     """
     # Chargez les données du solde de la carte de crédit
-    cc = pd.read_csv("https://projet-7-aws.s3.eu-north-1.amazonaws.com/credit_card_balance.csv")
+    cc = pd.read_csv("Data/raw/credit_card_balance.csv")
 
     # Applique l'encodage one-hot si nécessaire
     cc, cat_cols = one_hot_encoder(cc, nan_as_category=nan_as_category)

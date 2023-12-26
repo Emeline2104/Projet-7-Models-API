@@ -6,7 +6,7 @@ import sys
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 from preprocessing.aggregation import aggreger
-from models.models_selec import dummy_classifier, reg_log, kfold_lightgbm, random_forest
+from models_selec import dummy_classifier, reg_log, kfold_lightgbm, random_forest
 import joblib
 
 def main(type_model, balance):
@@ -50,9 +50,10 @@ def main(type_model, balance):
     return model
 
 if __name__ == "__main__":
-    #for modele in ['random_forest', 'log', 'lgbm']:
+    # for modele in ['random_forest', 'log', 'lgbm']:
+    #for modele in ['log', 'lgbm']:
     #    print(modele)
-    #    for gestion_desequilibre in ['class_weight', 'SMOTE', None]:
+    #    for gestion_desequilibre in ['SMOTE', None]:
     #        print(gestion_desequilibre)
     #        main(modele, gestion_desequilibre)
-            main('lgbm', 'None')
+    main('lgbm', None)

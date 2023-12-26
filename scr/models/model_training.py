@@ -419,7 +419,7 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
         )
 
     # Enregistrez l'explainer
-    with open("scr/models_saved/explainer_info.dill", "wb") as file:
+    with open("models/explainer_info.dill", "wb") as file:
         dill.dump(explainer_features_importance, file)
 
     # Enregistre la feature importance globale

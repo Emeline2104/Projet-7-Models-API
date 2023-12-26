@@ -37,6 +37,9 @@ Note :
 - Le script s'exécute en mode débogage avec l'option "debug=True" sur le port 5001.
 
 """
+import sys
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 from scr.preprocessing import pre_processing
 from flask import Flask, jsonify, request
 import pandas as pd
