@@ -45,7 +45,7 @@ Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](
 - Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)).
   
 #### Note méthodologique 
-La note méthodologique comprenant : 
+La [note méthodologique](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/TAPIN_Emeline_3_note_m%C3%A9thodologique_122023.pdf) comprenant : 
   - La méthodologie d'entraînement du modèle ; 
   - Le traitement du déséquilibre des classes ; 
   - La fonction coût métier, l'algorithme d'optimisation et la métrique d'évaluation ;
@@ -55,29 +55,17 @@ La note méthodologique comprenant :
   - L’analyse du Data Drift. 
 
 #### Support de présentation : 
-Un support de présentation pour la soutenance, détaillant le travail réalisé (*[3_Presentation]()*).
+Un support de présentation pour la soutenance, détaillant le travail réalisé (*[TAPIN_Emeline_4_presentation_072023.pdf](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/TAPIN_Emeline_4_presentation_072023.pdf)*).
 
 ### Le tableau HTML d’analyse de data drift 
 Tableau HTML du data drift réalisé à partir d’evidently (*[data_drift_report.html](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/data_drift_analysis/data_drift_report.html)*).
 
-#### Fichier introductif de l'API 
-Fichier introductif permettant de comprendre l'objectif du projet et le découpage des dossiers (*[]()*).
-Fichier listant les packages utilisés seront présents dans les dossiers (*[]()*).
 
 ## Structure du Projet
 
 Le projet est organisé de la manière suivante :
 - **.github/workflows**: 
   - **tests.yml**: Fichier de configuration pour les workflows GitHub.
-- **Data/sampled**: Données sélectionnées pour le déploiement Cloud Heroku.
-  - **POS_CASH_balance_selected.csv**
-  - **application_train_selected.csv**
-  - **bureau_balance_selected.csv**
-  - **bureau_selected.csv**
-  - **credit_card_balance_selected.csv**
-  - **installments_payments_selected.csv**
-  - **previous_application_selected.csv**
-  - **test_x_selected_head.csv**
 - **scr**: Le répertoire principal du code source.
   - **config.py**: Fichier de configuration pour le projet.
   - **data_drift_analysis**: Contient les scripts liés à l'analyse de data drift.
@@ -89,7 +77,7 @@ Le projet est organisé de la manière suivante :
     - **main.py**: Script principal pour le prétraitement et l'entraînement des modèles.
     - **model_training.py**: Script contenant les fonctions d'entraînement des modèles.
     - **models_selec.py**: Script pour la sélection des modèles.
-  - **models_saved**: Contient les modèles sauvegardés.
+  - **models_saved**: Contient les modèles et les variables sauvegardés.
   - **preprocessing**: Scripts pour le prétraitement des données.
     - **aggregation.py**: Script pour l'agrégation des données.
     - **pre_processing.py**: Script pour le nettoyage et l'ingénierie des fonctionnalités.
@@ -97,7 +85,6 @@ Le projet est organisé de la manière suivante :
 - **.gitignore**: Fichier spécifiant les fichiers et dossiers à ignorer dans le suivi git.
 - **Procfile**: Fichier spécifiant les commandes à exécuter lors du déploiement de l'application.
 - **README.md**: Documentation principale du projet.
-- **feature_imortance_global.csv**: Fichier CSV contenant l'importance globale des fonctionnalités.
 - **makefile**: Fichier de configuration pour la compilation et l'exécution du projet.
 - **requirements.txt**: Liste des dépendances du projet.
 - **run_tests.sh**: Script pour exécuter les tests du projet sur GitHub.
