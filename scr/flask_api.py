@@ -281,7 +281,7 @@ def get_global_feature_importance():
     - JSON: Contenu du fichier CSV sous forme de dictionnaire JSON.
     """
     # Chemin pour obtenir les infos de feature importance globale
-    importance_df = pd.read_csv('feature_imortance_global.csv')
+    importance_df = pd.read_csv('scr/models_saved/feature_imortance_global.csv')
     return jsonify(importance_df.to_dict(orient='records'))
 
 if __name__ == '__main__':

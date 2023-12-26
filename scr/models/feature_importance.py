@@ -85,6 +85,6 @@ def show_feature_importance(best_model, feats):
     importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False)
 
     # Enregistre le DataFrame au format CSV
-    importance_df.to_csv("feature_imortance_global.csv", index=False)
+    importance_df.to_csv("scr/models_saved/feature_imortance_global.csv", index=False)
 
     return importance_df
