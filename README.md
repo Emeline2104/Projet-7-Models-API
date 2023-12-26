@@ -36,10 +36,10 @@ Une API Flask a été déployé avec le modèle sélectionné ([*flask_api.py*](
 - Script principal du projet (*[main.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/main.py)*) qui effectue les étapes suivantes :
   - Chargement des données à partir du fichier spécifié dans le fichier de configuration (*[config.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/config.py)*);
   - Aggrégation des données (*[aggregation.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/preprocessing/aggregation.py)*);
-  - Nettoyage des données et feature engineering à l'aide d'un pipeline défini dans le module pre_processing (*[pre_processing.py]([https://github.com/Emeline2104/Predictive_energy_consumption/blob/master/scr/preprocessing/data_cleaning.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/preprocessing/pre_processing.py))*);
+  - Nettoyage des données et feature engineering à l'aide d'un pipeline défini dans le module pre_processing (*[pre_processing.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/preprocessing/pre_processing.py)*);
   - Fonctions d'entraînement et évaluation de modèles en utilisant le pipeline défini dans le module model_selec (*[model_training.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/model_training.py)*);
   - Pipeline d'entrainement et évaluation de modèles pour les différents alogorithme de classification (DummyClassifier, regression logistique, random forest, LGBM) (*[models_selec.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/models_selec.py)*);
-  - Analyse de la feature importance (*[feature_importance.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/feature_importance.py))
+  - Analyse de la feature importance (*[feature_importance.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/models/feature_importance.py)*)
 
 ##### Scripts de déploiement du modèle via API 
 - Script principal de l'API ([*flask_api.py*](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/flask_api.py)).
@@ -111,7 +111,7 @@ Pour exécuter le script, assurez-vous d'avoir Python 3.11 ou supérieur install
 ```bash
 python scr/models/main.py
 ```
-Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier [config.py]() selon les besoins de votre projet.
+Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier *[config.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/config.py)* selon les besoins de votre projet.
 Pour exécuter le code de ce projet, vous aurez besoin de Python 3.11 ou supérieur. Installez les dépendances à l'aide du fichier `requirements.txt`.
 
 ```bash
