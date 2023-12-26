@@ -67,7 +67,6 @@ Le projet est organisé de la manière suivante :
 - **.github/workflows**: 
   - **tests.yml**: Fichier de configuration pour les workflows GitHub.
 - **scr**: Le répertoire principal du code source.
-  - **config.py**: Fichier de configuration pour le projet.
   - **data_drift_analysis**: Contient les scripts liés à l'analyse de data drift.
     - **data_drift.py**: Script d'analyse de data drift.
     - **data_drift_report.html**: Rapport HTML généré à partir de l'analyse de data drift.
@@ -82,6 +81,7 @@ Le projet est organisé de la manière suivante :
     - **aggregation.py**: Script pour l'agrégation des données.
     - **pre_processing.py**: Script pour le nettoyage et l'ingénierie des fonctionnalités.
   - **test_model.py**: Script pour les tests unitaires du modèle.
+- **config.py**: Fichier de configuration pour le projet.
 - **.gitignore**: Fichier spécifiant les fichiers et dossiers à ignorer dans le suivi git.
 - **Procfile**: Fichier spécifiant les commandes à exécuter lors du déploiement de l'application.
 - **README.md**: Documentation principale du projet.
@@ -111,7 +111,7 @@ Pour exécuter le script, assurez-vous d'avoir Python 3.11 ou supérieur install
 ```bash
 python scr/models/main.py
 ```
-Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier *[config.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/scr/config.py)* selon les besoins de votre projet.
+Assurez-vous également de personnaliser les chemins et les paramètres dans le fichier *[config.py](https://github.com/Emeline2104/Projet-7-Models-API/blob/main/config.py)* selon les besoins de votre projet.
 Pour exécuter le code de ce projet, vous aurez besoin de Python 3.11 ou supérieur. Installez les dépendances à l'aide du fichier `requirements.txt`.
 
 ```bash
