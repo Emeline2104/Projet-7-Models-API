@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 
 # Chemins de fichiers
 model_filename = "scr/models_saved/best_model.pkl"
-explainer_filename = "models/explainer_info.dill"
+explainer_filename = "scr/models_saved/models/explainer_info.dill"
 seuil_filename = "scr/models_saved/meilleur_seuil.txt"
 
 # Fonctions de chargement

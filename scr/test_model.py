@@ -72,7 +72,7 @@ from .preprocessing.pre_processing import (
 
 from .preprocessing.aggregation import one_hot_encoder
 
-from .models.model_training import (
+from ..models.model_training import (
     custom_scorer,
     find_optimal_threshold,
     create_pipeline,

@@ -23,7 +23,7 @@ Dépendances:
     - mlflow
 """
 # Importations nécessaires
-from model_training import train_and_evaluate_model
+from models.model_training import train_and_evaluate_model
 from preprocessing.pre_processing import preprocessor
 import numpy as np
 from sklearn.dummy import DummyClassifier
