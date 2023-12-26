@@ -23,7 +23,7 @@ Dépendances:
     - mlflow
 """
 # Importations nécessaires
-from models.model_training import train_and_evaluate_model
+from model_training import train_and_evaluate_model
 from preprocessing.pre_processing import preprocessor
 import numpy as np
 from sklearn.dummy import DummyClassifier
@@ -42,7 +42,7 @@ def dummy_classifier(df, balance=None):
 
     :return: Le meilleur modèle de régression trouvé.
     """
-    train_x, train_y, test_x, test_y, class_weight_dict = preprocessor(df, 'dummy', balance)
+    train_x, train_y, test_x, test_y, _ = preprocessor(df, 'dummy', balance)
     print(train_x.shape, test_x.shape, train_y.shape, test_y.shape)
 
     model_selec = DummyClassifier(strategy='stratified')
