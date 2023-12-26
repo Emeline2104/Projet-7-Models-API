@@ -44,16 +44,11 @@ Tests unitaires :
     - test_format_client_data: Teste la fonction format_client_data.
     - test_predict_new_client: Teste la fonction predict_new_client.
 """
-
-import sys
 import numpy as np
 import pandas as pd
 import pytest
 from unittest import mock
 from lightgbm import LGBMClassifier
-
-#sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
-#sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 
 from .flask_api import (
     load_model,
@@ -72,7 +67,7 @@ from .preprocessing.pre_processing import (
 
 from .preprocessing.aggregation import one_hot_encoder
 
-from ..models.model_training import (
+from .models.model_training import (
     custom_scorer,
     find_optimal_threshold,
     create_pipeline,
