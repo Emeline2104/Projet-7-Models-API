@@ -20,7 +20,9 @@ Dépendances:
     - lightgbm
     - joblib
 """
-
+import sys
+sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+from config import FEATURE_IMPORTANCE_GLOBAL_FILENAME
 from lime import lime_tabular
 import numpy as np
 import pandas as pd
@@ -85,6 +87,6 @@ def show_feature_importance(best_model, feats):
     importance_df = importance_df.sort_values(by='Absolute_Coefficient', ascending=False)
 
     # Enregistre le DataFrame au format CSV
-    importance_df.to_csv("scr/models_saved/feature_imortance_global.csv", index=False)
+    importance_df.to_csv(FEATURE_IMPORTANCE_GLOBAL_FILENAME, index=False)
 
     return importance_df
