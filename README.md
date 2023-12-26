@@ -100,11 +100,6 @@ Pour exécuter le code de ce projet, vous aurez besoin de Python 3.11 ou supéri
 pip install -r requirements.txt
 ```
 
-Le fichier setup.py est également inclus pour permettre l'installation et la distribution du projet en tant que package Python.
-```bash
-pip install .
-```
-
 ### Execution du script
 Pour exécuter le script, assurez-vous d'avoir Python 3.11 ou supérieur installé et exécutez la commande suivante dans le terminal :
 
