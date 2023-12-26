@@ -313,7 +313,7 @@ def test_load_explainer():
     Vérifie que la fonction charge un explainer avec succès à partir d'un fichier spécifié.
     """
     # Teste le chargement de l'explainer
-    explainer_filename = "scr/models_saved/explainer_info.dill"
+    explainer_filename = "models/explainer_info.dill"
     explainer = load_explainer(explainer_filename)
     assert explainer is not None  # Vérifie si l'explainer est chargé avec succès
 
