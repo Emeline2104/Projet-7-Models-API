@@ -39,6 +39,12 @@ Note :
 """
 import sys
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+from config import (
+    MODEL_FILENAME,
+    BEST_SEUIL_FILENAME,
+    EXPLAINER_FILENAME,
+    FEATURE_IMPORTANCE_GLOBAL_FILENAME,
+)
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 from scr.preprocessing import pre_processing
 from flask import Flask, jsonify, request
@@ -53,10 +59,6 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Chemins de fichiers
-model_filename = "scr/models_saved/best_model.pkl"
-explainer_filename = "models/explainer_info.dill"
-seuil_filename = "scr/models_saved/meilleur_seuil.txt"
 
 # Fonctions de chargement
 def load_model(filename):
@@ -115,8 +117,8 @@ def load_explainer(filename):
         raise RuntimeError(f"Erreur lors du chargement de l'explainer depuis {filename}: {str(e)}")
 
 # Chargement du modèle entraîné et des fonctions
-model = load_model(model_filename)
-explainer = load_explainer(explainer_filename)
+model = load_model(MODEL_FILENAME)
+explainer = load_explainer(EXPLAINER_FILENAME)
 
 def format_client_data(client_data, donnees_test_path="Data/sampled/test_x_selected_head.csv"):
     """
@@ -261,7 +263,7 @@ def get_info_from_file():
     - str: Contenu du fichier texte contenant le seuil de classification optimal.
     """
     # Chemin pour obtenir les infos sur le seuil de classification optimal
-    file_path = 'scr/models_saved/meilleur_seuil.txt'
+    file_path = BEST_SEUIL_FILENAME
 
     # Ouverture du fichier
     with open(file_path, 'r') as file:
@@ -281,7 +283,7 @@ def get_global_feature_importance():
     - JSON: Contenu du fichier CSV sous forme de dictionnaire JSON.
     """
     # Chemin pour obtenir les infos de feature importance globale
-    importance_df = pd.read_csv('scr/models_saved/feature_imortance_global.csv')
+    importance_df = pd.read_csv(FEATURE_IMPORTANCE_GLOBAL_FILENAME)
     return jsonify(importance_df.to_dict(orient='records'))
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ le déséquilibre de classes.
 """
 import sys
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+from config import MODEL_FILENAME
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 from preprocessing.aggregation import aggreger
 from models_selec import dummy_classifier, reg_log, kfold_lightgbm, random_forest
@@ -43,10 +44,9 @@ def main(type_model, balance):
         raise ValueError("Le type de modèle spécifié n'est pas pris en charge.")
 
     # Sérialisation du modèle
-    model_filename = "scr/models_saved/best_model.pkl"
-    joblib.dump(model, model_filename)
+    joblib.dump(model, MODEL_FILENAME)
 
-    print(f"Le modèle a été sérialisé avec succès dans {model_filename}")
+    print(f"Le modèle a été sérialisé avec succès dans {MODEL_FILENAME}")
     return model
 
 if __name__ == "__main__":

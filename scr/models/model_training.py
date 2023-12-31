@@ -39,6 +39,7 @@ Dépendances:
 """
 import sys
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/")
+from config import BEST_SEUIL_FILENAME, TEST_X_SELECTED_HEAD_FILENAME, EXPLAINER_FILENAME
 sys.path.append("/Users/beatricetapin/Documents/2023/Data Science/Projet_7_Modele_API/scr/")
 from scr.models.feature_importance import explainer_lime, show_feature_importance
 import time
@@ -319,7 +320,7 @@ def evaluate_model(trained_model, test_x, test_y):
     meilleur_seuil = find_optimal_threshold(test_y, probas)
 
     # Enregistrement dans un fichier texte
-    with open("scr/models_saved/meilleur_seuil.txt", "w") as fichier:
+    with open(BEST_SEUIL_FILENAME, "w") as fichier:
         fichier.write(str(meilleur_seuil))
 
     # Utilisation du seuil optimal pour prédire les classes
@@ -405,7 +406,7 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
 
     # Evaluation du modèlé
     evaluate_model(trained_model, test_x_selected, test_y)
-    test_x_selected.head().to_csv("Data/sampled/test_x_selected_head.csv", index=False)
+    test_x_selected.head().to_csv(TEST_X_SELECTED_HEAD_FILENAME, index=False)
 
     def predict_fn(x):
         # Assuming 'model' is your trained LightGBM binary classification model
@@ -419,7 +420,7 @@ def train_and_evaluate_model(train_x_all, train_y_all, test_x, test_y, model_sel
         )
 
     # Enregistrez l'explainer
-    with open("models/explainer_info.dill", "wb") as file:
+    with open(EXPLAINER_FILENAME, "wb") as file:
         dill.dump(explainer_features_importance, file)
 
     # Enregistre la feature importance globale
