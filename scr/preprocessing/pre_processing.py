@@ -204,7 +204,7 @@ def preprocessor_api(df, model_type, balance=None):
         Tuple: Un tuple contenant les DataFrames d'entraînement et de test prétraités.
     """
     # Sélection des caractéristiques
-    if model_type in ['dummy', 'reg_log', 'random_forest','lgbm'] or (model_type == 'lgbm' and balance == 'SMOTE'):
+    if model_type in ['dummy', 'reg_log', 'random_forest'] or (model_type == 'lgbm' and balance == 'SMOTE'):
         df = select_features(df, threshold=0.3)
 
     feats = [f for f in df.columns if f not in ['TARGET', 'SK_ID_CURR', 'SK_ID_BUREAU', 'SK_ID_PREV', 'index']]
@@ -215,7 +215,7 @@ def preprocessor_api(df, model_type, balance=None):
     df.replace({None: np.nan}, inplace=True)
 
     # Gestion des valeurs manquantes
-    if model_type in ['dummy', 'reg_log', 'random_forest','lgbm'] or (model_type == 'lgbm' and balance == 'SMOTE'):
+    if model_type in ['dummy', 'reg_log', 'random_forest'] or (model_type == 'lgbm' and balance == 'SMOTE'):
         df = df.dropna()
 
     # Nettoyage des noms de colonnes
