@@ -7,3 +7,4 @@ __pycache__/
 venv/
 *.pytest_cache
 /TAPIN_Emeline_3_note_méthodologique_122023.pages
+*.key
