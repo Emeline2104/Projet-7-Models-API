@@ -118,7 +118,7 @@ def load_explainer(filename):
 
 # Chargement du modèle entraîné et des fonctions
 model = load_model(MODEL_FILENAME)
-explainer = load_explainer(EXPLAINER_FILENAME)
+explainer = load_explainer("models/explainer_info.dill")
 
 def format_client_data(client_data, donnees_test_path="Data/sampled/test_x_selected_head.csv"):
     """
